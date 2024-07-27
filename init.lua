@@ -187,13 +187,23 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+--  Navigate tabs
 vim.keymap.set('n', '<M-h>', ':tabprev<CR>', { desc = 'Move to the previous tab' })
 vim.keymap.set('n', '<M-l>', ':tabnext<CR>', { desc = 'Move to the next tab' })
 vim.keymap.set('n', '<M-t>', ':tabnew<CR>', { desc = 'Open new tab' })
 vim.keymap.set('n', '<M-w>', ':tabc<CR>', { desc = 'Close tab' })
 
+-- toggle comment
 vim.keymap.set('n', '<C-_>', 'gcc', { remap = true, desc = 'toggle comment' })
 vim.keymap.set('v', '<C-_>', 'gc', { remap = true, desc = 'toggle multiple comment' })
+
+-- mapping deleting and cutting
+vim.keymap.set('n', '<M-x>', 'x')
+vim.keymap.set({ 'n', 'v' }, '<M-d>', 'd')
+vim.keymap.set('n', '<M-D>', 'D')
+vim.keymap.set('n', 'x', '"_x')
+vim.keymap.set('n', 'd', '"_d')
+vim.keymap.set('n', 'D', '"_D')
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -234,6 +244,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   'ThePrimeagen/vim-be-good', -- :VimBeGood for navigation training
+  'mg979/vim-visual-multi', -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     -- See `:help gitsigns` to understand what the configuration keys do

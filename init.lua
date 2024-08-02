@@ -245,6 +245,30 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   'ThePrimeagen/vim-be-good', -- :VimBeGood for navigation training
   'mg979/vim-visual-multi', -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
+  -- {
+  --   'nvim-tree/nvim-tree.lua',
+  --   dependencies = {
+  --     { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+  --   },
+  --   config = function()
+  --     require('nvim-tree').setup {
+  --       renderer = {
+  --         icons = {
+  --           show = {
+  --             file = false,
+  --             folder = false,
+  --             folder_arrow = false,
+  --             git = false,
+  --           },
+  --         },
+  --       },
+  --     }
+  --     vim.keymap.set('n', '<leader>bt', ':NvimTreeToggle<CR>', { desc = '[T]oggle File Tree' })
+  --     vim.keymap.set('n', '<leader>br', ':NvimTreeRefresh<CR>', { desc = '[R]efresh File Tree' })
+  --     vim.keymap.set('n', '<leader>bc', ':NvimTreeCollapse<CR>', { desc = '[C]ollapse File Tree' })
+  --     vim.keymap.set('n', '<leader>bp', ':NvimTreeCollapseKeepBuffers<CR>', { desc = '[P]artial Collapse File Tree' })
+  --   end,
+  -- },
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     -- See `:help gitsigns` to understand what the configuration keys do
@@ -278,6 +302,7 @@ require('lazy').setup({
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
         ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
         ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+        -- ['<leader>b'] = { name = 'File Tree', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -837,9 +862,9 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.

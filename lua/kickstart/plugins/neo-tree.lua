@@ -11,13 +11,22 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal' },
+    { '<leader>b', ':Neotree reveal<CR>', desc = 'NeoTree reveal' },
   },
   opts = {
+    default_component_configs = {
+      git_status = {
+        symbols = false,
+      },
+    },
     filesystem = {
+      symbols = false,
+      filtered_items = {
+        visible = true,
+      },
       window = {
         mappings = {
-          ['\\'] = 'close_window',
+          ['<leader>b'] = 'close_window',
         },
       },
     },

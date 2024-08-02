@@ -244,7 +244,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   'ThePrimeagen/vim-be-good', -- :VimBeGood for navigation training
-  'mg979/vim-visual-multi', -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
+  { 'mg979/vim-visual-multi', tag = 'v0.5.8' }, -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
   -- {
   --   'nvim-tree/nvim-tree.lua',
   --   dependencies = {
@@ -269,10 +269,11 @@ require('lazy').setup({
   --     vim.keymap.set('n', '<leader>bp', ':NvimTreeCollapseKeepBuffers<CR>', { desc = '[P]artial Collapse File Tree' })
   --   end,
   -- },
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  { 'tpope/vim-sleuth', tag = 'v2.0' }, -- Detect tabstop and shiftwidth automatically
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     -- See `:help gitsigns` to understand what the configuration keys do
     'lewis6991/gitsigns.nvim',
+    version = 'v0.9.0',
     opts = {
       signs = {
         add = { text = '+' },

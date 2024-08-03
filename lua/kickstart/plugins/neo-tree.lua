@@ -11,7 +11,7 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '<leader>b', ':Neotree reveal<CR>', desc = 'NeoTree reveal' },
+    { '<leader>b', ':Neotree reveal<CR>', desc = 'Open File Tree' },
   },
   opts = {
     default_component_configs = {

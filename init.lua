@@ -251,30 +251,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup {
   'ThePrimeagen/vim-be-good', -- :VimBeGood for navigation training
   { 'mg979/vim-visual-multi', tag = 'v0.5.8' }, -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
-  -- {
-  --   'nvim-tree/nvim-tree.lua',
-  --   dependencies = {
-  --     { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-  --   },
-  --   config = function()
-  --     require('nvim-tree').setup {
-  --       renderer = {
-  --         icons = {
-  --           show = {
-  --             file = false,
-  --             folder = false,
-  --             folder_arrow = false,
-  --             git = false,
-  --           },
-  --         },
-  --       },
-  --     }
-  --     vim.keymap.set('n', '<leader>bt', ':NvimTreeToggle<CR>', { desc = '[T]oggle File Tree' })
-  --     vim.keymap.set('n', '<leader>br', ':NvimTreeRefresh<CR>', { desc = '[R]efresh File Tree' })
-  --     vim.keymap.set('n', '<leader>bc', ':NvimTreeCollapse<CR>', { desc = '[C]ollapse File Tree' })
-  --     vim.keymap.set('n', '<leader>bp', ':NvimTreeCollapseKeepBuffers<CR>', { desc = '[P]artial Collapse File Tree' })
-  --   end,
-  -- },
   { 'tpope/vim-sleuth', tag = 'v2.0' }, -- Detect tabstop and shiftwidth automatically
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     -- See `:help gitsigns` to understand what the configuration keys do
@@ -513,24 +489,45 @@ require('lazy').setup {
       local servers = {
         pyright = {
           settings = {
-            -- pyright = {
-            --   disableOrganizeImports = true,
-            -- },
+            pyright = {
+              disableOrganizeImports = true,
+            },
             python = {
               analysis = {
-                -- diagnosticMode = 'openFilesOnly',
+                diagnosticMode = 'openFilesOnly',
                 typeCheckingMode = 'off',
-                -- exclude = { '**/sandbox/test.py', '**/*' },
-                -- ignore = { '*' },
+                ignore = { '*' },
               },
             },
           },
         },
-        ruff = {},
-        mypy = {
-          settings = {
-            mypy = {
-              strict = true,
+        ruff = {
+          lint = {
+            select = {
+              'E',
+              'W',
+              'F',
+              'I',
+              'B',
+              'A',
+              'N',
+              'COM',
+              'C4',
+              'LOG',
+              'SIM',
+              'TID',
+              'PT',
+              'ASYNC',
+              'SLF',
+              'YTT',
+              'FLY',
+              'PL',
+              'PERF',
+              'UP',
+              'RUF',
+            },
+            ignore = {
+              'PLR2004',
             },
           },
         },
@@ -544,7 +541,6 @@ require('lazy').setup {
             },
           },
         },
-        stylua = {},
       }
 
       require('mason').setup() --  :Mason for manual install/inspect
@@ -581,10 +577,7 @@ require('lazy').setup {
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = { c = true, cpp = true } -- Disable fallback for problematic languages
         return {
           timeout_ms = 500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -592,14 +585,11 @@ require('lazy').setup {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        -- python = { 'ruff' },
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
+        python = { 'ruff_organize_imports', 'ruff_format' },
       },
     },
+    -- require('mason').setup() --  :Mason for manual install/inspect
+    -- require('mason-tool-installer').setup { ensure_installed = { 'stylua' } },
   },
 
   { -- Autocompletion
@@ -820,7 +810,7 @@ require('lazy').setup {
   --
   -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps

@@ -29,6 +29,12 @@ return {
     config = true,
   },
 
+  -- {
+  --   'ThePrimeagen/harpoon',
+  --   branch = 'harpoon2',
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
+  -- },
+
   --   version = '*',
   --   dependencies = {
   --     'nvim-lua/plenary.nvim',

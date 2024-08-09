@@ -50,12 +50,34 @@ return { -- Fuzzy Finder (files, lsp, etc)
       --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
       --   },
       -- },
-      -- pickers = {}
+      -- pickers = {},
       extensions = {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
         },
       },
+      -- defaults = {
+      --   -- configure to use ripgrep
+      --   vimgrep_arguments = {
+      --     'rg',
+      --     '--follow', -- Follow symbolic links
+      --     '--hidden', -- Search for hidden files
+      --     '--no-heading', -- Don't group matches by each file
+      --     '--with-filename', -- Print the file path with the matched lines
+      --     '--line-number', -- Show line numbers
+      --     '--column', -- Show column numbers
+      --     '--smart-case', -- Smart case search
+      --
+      --     -- Exclude some patterns from search
+      --     '--glob=!**/.git/*',
+      --     '--glob=!**/.idea/*',
+      --     '--glob=!**/.vscode/*',
+      --     '--glob=!**/build/*',
+      --     '--glob=!**/dist/*',
+      --     '--glob=!**/yarn.lock',
+      --     '--glob=!**/package-lock.json',
+      --   },
+      -- },
     }
 
     -- Enable Telescope extensions if they are installed
@@ -78,12 +100,13 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>gsc', builtin.git_commits, { desc = '[G]it [S]earch [C]ommits' })
     vim.keymap.set('n', '<leader>gss', builtin.git_status, { desc = '[G]it [S]earch [S]tatus' })
     vim.keymap.set('n', '<leader>gsb', builtin.git_branches, { desc = '[G]it [S]earch [B]ranches' })
+    vim.keymap.set('n', '<leader>si', '<cmd>Telescope find_files hidden=true<cr>', { desc = '[S]earch [I]gnored files' })
 
     -- Slightly advanced example of overriding default behavior and theme
     vim.keymap.set('n', '<leader>/', function()
       -- You can pass additional configuration to Telescope to change the theme, layout, etc.
       builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-        winblend = 10,
+        winbend = 10,
         previewer = false,
       })
     end, { desc = '[/] Fuzzily search in current buffer' })

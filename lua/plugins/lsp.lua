@@ -1,7 +1,7 @@
 return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
   'neovim/nvim-lspconfig',
   dependencies = {
-    {'williamboman/mason.nvim', config = true},
+    { 'williamboman/mason.nvim', config = true },
     'williamboman/mason-lspconfig.nvim',
     { 'j-hui/fidget.nvim', opts = {} }, -- Useful status updates for LSP.
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -99,8 +99,14 @@ return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
             analysis = {
               diagnosticMode = 'openFilesOnly',
               typeCheckingMode = 'off',
-              ignore = { '*' },
+              diagnosticSeverityOverrides = {
+                reportMissingModuleSource = 'error',
+                reportInvalidTypeForm = 'none',
+                reportMissingImports = 'error',
+                reportUndefinedVariable = 'none',
+              },
             },
+            pythonPath = '.venv/bin/python',
           },
         },
       },
@@ -145,6 +151,7 @@ return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
       },
     }
 
+    local lspconfig = require 'lspconfig'
     require('mason-lspconfig').setup {
       ensure_installed = { 'ruff', 'pyright', 'lua_ls' },
       handlers = {
@@ -154,7 +161,7 @@ return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
             return
           end
           server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
+          lspconfig[server_name].setup(server)
         end,
       },
     }

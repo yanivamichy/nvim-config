@@ -51,6 +51,12 @@ vim.keymap.set('n', 'D', '"_D')
 vim.keymap.set('n', 'cw', '"_cw')
 vim.keymap.set('n', '<M-c>w', 'cw')
 
+-- increase/decrease split window size
+vim.keymap.set('n', '<C-up>', ':res+1<CR>', { desc = 'Increase split window height' })
+vim.keymap.set('n', '<C-down>', ':res-1<CR>', { desc = 'Decrease split window height' })
+vim.keymap.set('n', '<C-right>', ':vert res+1<CR>', { desc = 'Increase split window width' })
+vim.keymap.set('n', '<C-left>', ':vert res-1<CR>', { desc = 'Decrease split window width' })
+
 -- open util windows
 -- vim.keymap.set('n', '<space>l', rhs,{desc = 'Open [L]og'})
 -- vim.keymap.set('n', '<space>m', rhs,{desc = 'Open [M]essages'})

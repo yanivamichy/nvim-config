@@ -63,4 +63,17 @@ return {
       end,
     },
   },
+
+  {
+    'tpope/vim-fugitive',
+    event = 'VimEnter',
+    keys = {
+      { '<leader>gd', ':Gvdiff<CR>', desc = 'Open [G]it [D]iff' },
+      { '<leader>gg', ':G<CR><C-w><S-H>', desc = 'Open [G]it tool' },
+      { '<leader>gc', ':Git commit<CR>', desc = '[G]it [C]ommit' },
+    },
+  },
+  {
+    'tpope/vim-rhubarb',
+  },
 }

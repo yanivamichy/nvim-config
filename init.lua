@@ -36,16 +36,15 @@ require('lazy').setup {
   require 'plugins.visual',
   require 'plugins.editing',
   require 'plugins.navigating',
-  require 'plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'plugins.git', -- adds gitsigns recommend keymaps
 
   require 'plugins.telescope',
-  require 'plugins.mason',
   require 'plugins.lsp',
   require 'plugins.formatter',
   require 'plugins.autocomplete',
   require 'plugins.lint',
   require 'plugins.treesitter',
-  -- require 'kickstart.plugins.debug',
+  require 'plugins.debug',
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

@@ -3,7 +3,8 @@ return {
   { -- Linting
     'mfussenegger/nvim-lint',
     dependencies = {
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      { 'williamboman/mason.nvim', config = true },
+      'rshkarin/mason-nvim-lint',
     },
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
@@ -19,6 +20,9 @@ return {
           lint.try_lint()
         end,
       })
+      require('mason-nvim-lint').setup {
+        ensured_installed = { 'mypy' },
+      }
     end,
   },
 }

@@ -1,8 +1,8 @@
 return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
   'neovim/nvim-lspconfig',
   dependencies = {
+    {'williamboman/mason.nvim', config = true},
     'williamboman/mason-lspconfig.nvim',
-    'WhoIsSethDaniel/mason-tool-installer.nvim',
     { 'j-hui/fidget.nvim', opts = {} }, -- Useful status updates for LSP.
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
@@ -146,6 +146,7 @@ return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
     }
 
     require('mason-lspconfig').setup {
+      ensure_installed = { 'ruff', 'pyright', 'lua_ls' },
       handlers = {
         function(server_name)
           local server = servers[server_name]

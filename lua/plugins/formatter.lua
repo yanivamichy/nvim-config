@@ -1,5 +1,9 @@
 return { -- Autoformat
   'stevearc/conform.nvim',
+  dependencies = {
+    { 'williamboman/mason.nvim', config = true },
+    'mason-conform.nvim',
+  },
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     require('conform').setup {
@@ -7,6 +11,8 @@ return { -- Autoformat
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'ruff_organize_imports', 'ruff_format' },
+        json = { 'biome' },
+        toml = { 'taplo' },
       },
       format_on_save = function(bufnr)
         local disable_filetypes = { c = true, cpp = true } -- Disable fallback for problematic languages
@@ -19,5 +25,7 @@ return { -- Autoformat
     vim.keymap.set('', '<leader>f', function()
       require('conform').format { async = true, lsp_fallback = true }
     end, { desc = '[F]ormat buffer' })
+
+    require('mason-conform').setup {}
   end,
 }

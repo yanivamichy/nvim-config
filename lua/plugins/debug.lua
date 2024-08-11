@@ -11,6 +11,10 @@ return {
     keys = function(_, keys)
       local dap = require 'dap'
       local dapui = require 'dapui'
+      vim.keymap.set({ 'n', 'v' }, '<F2>', dapui.eval, { desc = 'Debug: Evaluate' })
+      vim.keymap.set({ 'v' }, '<F33>', function() -- keymap is <C-F9>
+        dap.repl.execute(require('dapui.util').get_current_expr())
+      end, { desc = 'Debug: Execute selected' })
       return {
         -- Basic debugging keymaps, feel free to change to your liking!
         { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },

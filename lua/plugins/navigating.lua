@@ -7,6 +7,7 @@ return {
       require('oil').setup {
         keymaps = {
           ['q'] = 'actions.close',
+          ['<BS>'] = 'actions.parent',
         },
         win_options = {
           signcolumn = 'yes:2',
@@ -19,7 +20,6 @@ return {
         view_options = { show_hidden = true },
       }
       vim.keymap.set('n', '-', ':Oil --float<CR>', { desc = 'Open parent directory' })
-      vim.keymap.set('n', '<leader>b', ':Oil --float<CR>', { desc = 'Open parent directory' })
     end,
   },
 

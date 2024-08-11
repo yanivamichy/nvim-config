@@ -37,6 +37,7 @@ return {
         ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
         ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
         ['<leader>gs'] = { name = '[G]it [S]earch', _ = 'which_key_ignore' },
+        ['<leader>gu'] = { name = '[U]nit tests', _ = 'which_key_ignore' },
       }
     end,
   },

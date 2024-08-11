@@ -45,6 +45,7 @@ require('lazy').setup {
   require 'plugins.lint',
   require 'plugins.treesitter',
   require 'plugins.debug',
+  require 'plugins.unittest',
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

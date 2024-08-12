@@ -1,4 +1,4 @@
-local function get_buf_by_name(name)
+function get_buf_by_name(name)
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     local buf_name = vim.api.nvim_buf_get_name(buf)
     vim.api.nvim_echo({ { tostring(buf_name), 'Normal' } }, true, {})
@@ -7,6 +7,16 @@ local function get_buf_by_name(name)
     end
   end
   return nil
+end
+
+function capture_cmd(command)
+  local output = vim.api.nvim_cmd({ cmd = command }, { output = true })
+  return output:gmatch '[^\r\n]+'
+end
+
+function new_buffer(name)
+  vim.fn.execute 'new | wincmd J | res10 | set wfh'
+  vim.fn.execute 'wincmd p'
 end
 
 return {
@@ -77,20 +87,4 @@ return {
     -- end,
   },
   { 'tpope/vim-scriptease' },
-  -- {
-  --   'AckslD/messages.nvim',
-  --   config = function()
-  --     require('messages').setup()
-  --     Msg = function(...)
-  --       require('messages.api').capture_thing(...)
-  --     end
-  --   end,
-  --   keys = {
-  --     {
-  --       '<leader>m',
-  --       ':Messages messages<CR>',
-  --       desc = 'Display [M]essages in buffer',
-  --     },
-  --   },
-  -- },
 }

@@ -36,8 +36,7 @@ require('lazy').setup {
   require 'plugins.visual',
   require 'plugins.editing',
   require 'plugins.navigating',
-  require 'plugins.git', -- adds gitsigns recommend keymaps
-
+  require 'plugins.git',
   require 'plugins.telescope',
   require 'plugins.lsp',
   require 'plugins.formatter',
@@ -46,6 +45,10 @@ require('lazy').setup {
   require 'plugins.treesitter',
   require 'plugins.debug',
   require 'plugins.unittest',
+  -- nvim-bpf
+  -- LuaSnip
+  -- parinfer
+  -- toggleterm
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

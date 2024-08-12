@@ -2,7 +2,7 @@ return { -- Autoformat
   'stevearc/conform.nvim',
   dependencies = {
     { 'williamboman/mason.nvim', config = true },
-    'mason-conform.nvim',
+    'zapling/mason-conform.nvim',
   },
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
@@ -26,6 +26,6 @@ return { -- Autoformat
       require('conform').format { async = true, lsp_fallback = true }
     end, { desc = '[F]ormat buffer' })
 
-    require('mason-conform').setup {}
+    require('mason-conform').setup()
   end,
 }

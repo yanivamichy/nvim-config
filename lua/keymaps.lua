@@ -31,23 +31,23 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
---  Navigate tabs
+--  Navigate tabs / buffers
 vim.keymap.set('n', '<M-h>', ':tabprev<CR>', { desc = 'Move to the previous tab' })
 vim.keymap.set('n', '<M-l>', ':tabnext<CR>', { desc = 'Move to the next tab' })
 vim.keymap.set('n', '<M-t>', ':tabnew<CR>', { desc = 'Open new tab' })
-vim.keymap.set('n', '<M-w>', ':tabc<CR>', { desc = 'Close tab' })
+vim.keymap.set('n', '<M-w>', ':bd<CR>', { desc = 'Close buffer' })
 
 -- toggle comment
 vim.keymap.set('n', '<C-_>', 'gcc', { remap = true, desc = 'toggle comment' })
 vim.keymap.set('v', '<C-_>', 'gc', { remap = true, desc = 'toggle multiple comment' })
 
 -- mapping deleting and cutting
-vim.keymap.set('n', '<M-x>', 'x')
+vim.keymap.set({ 'n', 'v' }, '<M-x>', 'x')
 vim.keymap.set({ 'n', 'v' }, '<M-d>', 'd')
 vim.keymap.set('n', '<M-D>', 'D')
-vim.keymap.set('n', 'x', '"_x')
+vim.keymap.set({ 'n', 'v' }, 'x', '"_x')
 vim.keymap.set({ 'n', 'v' }, 'd', '"_d')
-vim.keymap.set('n', 'D', '"_D')
+vim.keymap.set({ 'n', 'v' }, 'D', '"_D')
 vim.keymap.set('n', 'cw', '"_cw')
 vim.keymap.set('n', '<M-c>w', 'cw')
 

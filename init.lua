@@ -49,6 +49,7 @@ require('lazy').setup {
   -- LuaSnip
   -- parinfer
   -- toggleterm
+  -- sessin manager
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`

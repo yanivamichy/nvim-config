@@ -45,12 +45,10 @@ require('lazy').setup {
   require 'plugins.treesitter',
   require 'plugins.debug',
   require 'plugins.unittest',
-  -- nvim-bpf
-  -- LuaSnip
-  -- parinfer
+  require 'plugins.terminal',
   -- toggleterm
   -- sessin manager
+  -- { 'mg979/vim-visual-multi', tag = 'v0.5.8' }, -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
 }
-
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

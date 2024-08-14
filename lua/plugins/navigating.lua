@@ -29,4 +29,5 @@ return {
     dependencies = { 'stevearc/oil.nvim' },
     config = true,
   },
+  -- LuaSnip
 }

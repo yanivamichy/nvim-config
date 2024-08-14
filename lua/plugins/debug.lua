@@ -66,7 +66,6 @@ return {
       dap.listeners.before.event_terminated['dapui_config'] = dapui.close
       dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
-      -- require('dap-python').setup '~/.local/share/nvim/mason/packages/debugpy/venv/bin/python'
       dap.adapters.python = {
         type = 'executable',
         command = vim.fn.expand '~/.local/share/nvim/mason/packages/debugpy/venv/bin/python',

@@ -37,8 +37,6 @@ local function display_cmd(command, buf_name)
   end
 end
 
--- display_cmd('messages', 'Messages')
-
 vim.keymap.set('n', '<leader>m', function()
   display_cmd 'messages'
 end, { desc = 'Toggle [M]essages' })

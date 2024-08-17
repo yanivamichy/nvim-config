@@ -35,7 +35,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup {
   require 'plugins.visual',
   require 'plugins.editing',
-  require 'plugins.navigating',
+  require 'plugins.navigation',
   require 'plugins.git',
   require 'plugins.telescope',
   require 'plugins.lsp',
@@ -46,9 +46,7 @@ require('lazy').setup {
   require 'plugins.debug',
   require 'plugins.unittest',
   require 'plugins.terminal',
-  -- toggleterm
-  -- sessin manager
-  -- { 'mg979/vim-visual-multi', tag = 'v0.5.8' }, -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
+  require 'plugins.session_manager',
 }
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -15,13 +15,18 @@ return {
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
     end,
+    opts = {
+      on_colors = function(colors)
+        colors.border = colors.blue0
+      end,
+    },
   },
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     version = 'v2.1.0',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter' (`:help autocmd-events`).
-    config = function() -- This is the function that runs, AFTER loading
+    config = function() -- This is the function thmt runs, AFTER loading
       require('which-key').setup {
         icons = { mappings = false },
       }
@@ -49,5 +54,44 @@ return {
     'lukas-reineke/indent-blankline.nvim',
     main = 'ibl',
     opts = {},
+  },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup {
+        options = {
+          icons_enabled = false,
+          component_separators = { left = '|', right = '|' },
+          section_separators = { left = '|', right = '|' },
+          globalstatus = true,
+        },
+        sections = {
+          lualine_c = {
+            {
+              'filename',
+              path = 1,
+            },
+          },
+        },
+        winbar = {
+          lualine_a = {
+            '%f',
+          },
+          lualine_b = {
+            '%m',
+          },
+        },
+        inactive_winbar = {
+          lualine_a = {
+            '%f',
+          },
+          lualine_b = {
+            '%m',
+          },
+        },
+      }
+    end,
   },
 }

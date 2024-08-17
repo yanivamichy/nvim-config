@@ -12,9 +12,20 @@ return {
       local dap = require 'dap'
       local dapui = require 'dapui'
       vim.keymap.set({ 'n', 'v' }, '<F2>', dapui.eval, { desc = 'Debug: Evaluate' })
-      vim.keymap.set({ 'v' }, '<F33>', function() -- keymap is <C-F9>
-        dap.repl.execute(require('dapui.util').get_current_expr())
+      vim.keymap.set('x', '<F33>', function() -- keymap is <C-F9>
+        local mode = vim.fn.mode()
+        local lines
+        if mode == 'V' then
+          lines = vim.fn.getline(vim.fn.getpos('.')[2], vim.fn.getpos('v')[2])
+        else
+          lines = vim.fn.getregion(vim.fn.getpos '.', vim.fn.getpos 'v')
+        end
+        dap.repl.execute(table.concat(lines, '\n'))
+        local bufnr = dapui.elements.repl.buffer()
+        local winid = vim.fn.bufwinid(bufnr)
+        vim.api.nvim_win_set_cursor(winid, { vim.api.nvim_buf_line_count(bufnr), 0 })
       end, { desc = 'Debug: Execute selected' })
+
       return {
         -- Basic debugging keymaps, feel free to change to your liking!
         { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },
@@ -74,6 +85,7 @@ return {
           source_filetype = 'python',
         },
       }
+      local ltf = require 'utils.LanguageToolFinders'
       dap.configurations.python = {
         {
           type = 'python',
@@ -82,16 +94,7 @@ return {
           console = 'integratedTerminal',
           program = '${file}',
           cwd = '${workspaceFolder}',
-          python = function()
-            local cwd = vim.fn.getcwd()
-            if vim.fn.executable(cwd .. '/venv/bin/python') == 1 then
-              return cwd .. '/venv/bin/python'
-            elseif vim.fn.executable(cwd .. '/.venv/bin/python') == 1 then
-              return cwd .. '/.venv/bin/python'
-            else
-              return '/usr/bin/python3'
-            end
-          end,
+          python = ltf.get_python_env,
           justMyCode = false,
           stopOnEntry = false,
           env = { PYTHONPATH = '${workspaceFolder}' .. ':' .. (os.getenv 'PYTHONPATH' or '') },

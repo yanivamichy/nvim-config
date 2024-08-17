@@ -45,11 +45,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
       -- You can put your default mappings / updates / etc. in here
       --  All the info you're looking for is in `:help telescope.setup()`
       --
-      -- defaults = {
-      --   mappings = {
-      --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-      --   },
-      -- },
+      defaults = {
+        mappings = {
+          -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          i = { ['<M-w>'] = require('telescope.actions').delete_buffer },
+        },
+      },
       -- pickers = {}
       extensions = {
         ['ui-select'] = {
@@ -74,7 +75,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
     vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
     vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-    vim.keymap.set('n', '<leader>sb', builtin.current_buffer_fuzzy_find, { desc = '[S]earch current [B]uffer' })
+    vim.keymap.set('n', '<leader>sc', builtin.current_buffer_fuzzy_find, { desc = '[S]earch [C]urrent buffer' })
+    vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch [B]uffers' })
     vim.keymap.set('n', '<leader>gsc', builtin.git_commits, { desc = '[G]it [S]earch [C]ommits' })
     vim.keymap.set('n', '<leader>gss', builtin.git_status, { desc = '[G]it [S]earch [S]tatus' })
     vim.keymap.set('n', '<leader>gsb', builtin.git_branches, { desc = '[G]it [S]earch [B]ranches' })

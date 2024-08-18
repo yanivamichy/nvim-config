@@ -47,6 +47,7 @@ require('lazy').setup {
   require 'plugins.unittest',
   require 'plugins.terminal',
   require 'plugins.session_manager',
+  require 'plugins.remote',
 }
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

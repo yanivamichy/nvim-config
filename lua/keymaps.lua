@@ -56,3 +56,13 @@ vim.keymap.set('n', '<C-up>', ':res+1<CR>', { desc = 'Increase split window heig
 vim.keymap.set('n', '<C-down>', ':res-1<CR>', { desc = 'Decrease split window height' })
 vim.keymap.set('n', '<C-right>', ':vert res+1<CR>', { desc = 'Increase split window width' })
 vim.keymap.set('n', '<C-left>', ':vert res-1<CR>', { desc = 'Decrease split window width' })
+
+-- set undo breakpoints
+vim.keymap.set('i', '<space>', '<C-G>u<space>', { noremap = true, silent = true })
+vim.keymap.set('i', '<CR>', '<C-G>u<CR>', { noremap = true, silent = true })
+vim.keymap.set('i', '.', '<C-G>u.', { noremap = true, silent = true })
+vim.keymap.set('i', ',', '<C-G>u,', { noremap = true, silent = true })
+vim.keymap.set('i', '(', '<C-G>u(', { noremap = true, silent = true })
+vim.keymap.set('i', '<', '<C-G>u<', { noremap = true, silent = true })
+vim.keymap.set('i', '[', '<C-G>u[', { noremap = true, silent = true })
+vim.keymap.set('i', '{', '<C-G>u{', { noremap = true, silent = true })

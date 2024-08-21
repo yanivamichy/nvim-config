@@ -91,7 +91,7 @@ return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
     --  - settings (table): Override the default settings passed when initializing the server.
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
-      pyright = {
+      basedpyright = {
         settings = {
           pyright = {
             disableOrganizeImports = true,
@@ -107,7 +107,14 @@ return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
                 reportUndefinedVariable = 'none',
               },
             },
-            pythonPath = '.venv/bin/python',
+            pythonPath = require('utils.LanguageToolFinders').get_python_env(),
+          },
+          basedpyright = {
+            analysis = {
+              diagnosticSeverityOverrides = {
+                reportMissingTypeStubs = 'none',
+              },
+            },
           },
         },
       },
@@ -154,7 +161,7 @@ return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
 
     local lspconfig = require 'lspconfig'
     require('mason-lspconfig').setup {
-      ensure_installed = { 'ruff', 'pyright', 'lua_ls' },
+      ensure_installed = vim.tbl_keys(servers or {}),
       handlers = {
         function(server_name)
           local server = servers[server_name]
@@ -166,5 +173,7 @@ return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
         end,
       },
     }
+    -- vim.api.nvim_set_hl(0, '@lsp.type.variable.python', { fg = '#d7f1fe', bg = 'NONE' })
+    vim.api.nvim_set_hl(0, '@lsp.type.namespace.python', { fg = '#4EC9B0', bg = 'NONE' })
   end,
 }

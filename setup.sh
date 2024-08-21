@@ -29,4 +29,14 @@ nvm install 22
 
 echo "Installing Python & dependencies..."
 sudo apt install python3-venv
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install python3.11
+curl -sSL https://install.python-poetry.org | python3 - --version 1.6.1
+export PATH="/home/yaniv.am/.local/bin:$PATH"
 
+echo "Installing db clients..."
+sudo apt install default-libmysqlclient-dev
+
+echo "Stuff.."
+stty -ixon

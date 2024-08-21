@@ -1,3 +1,6 @@
+local function char2hex(char)
+  return string.format('%02X', string.byte(char))
+end
 return {
   {
     'rmagatti/auto-session',
@@ -15,7 +18,23 @@ return {
       require('auto-session').setup {
         auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
         auto_session_create_enabled = false,
-        pre_restore_cmds = { save_buffers },
+        pre_save_cmds = {
+          function()
+            local session_name = require('auto-session.lib').current_session_name()
+            if session_name ~= '' then
+              vim.cmd.wshada('~/.local/state/nvim/shada/' .. session_name:gsub('[/, .]', char2hex) .. '.shada')
+            end
+          end,
+        },
+        pre_restore_cmds = {
+          save_buffers,
+        },
+        post_restore_cmds = {
+          function()
+            local shada_file = '~/.local/state/nvim/shada/' .. require('auto-session.lib').current_session_name():gsub('[/, .]', char2hex) .. '.shada'
+            vim.cmd.rshada(shada_file)
+          end,
+        },
         session_lens = {
           load_on_setup = true,
         },

@@ -1,4 +1,11 @@
 return {
+  -- {
+  --   'chipsenkbeil/distant.nvim',
+  --   branch = 'v0.3',
+  --   config = function()
+  --     require('distant'):setup()
+  --   end,
+  -- },
   'amitds1997/remote-nvim.nvim',
   version = 'v0.3.11', -- Pin to GitHub releases
   dependencies = {

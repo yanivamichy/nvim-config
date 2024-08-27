@@ -1,6 +1,7 @@
 local function char2hex(char)
   return string.format('%02X', string.byte(char))
 end
+
 return {
   {
     'rmagatti/auto-session',

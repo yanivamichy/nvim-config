@@ -36,7 +36,8 @@ curl -sSL https://install.python-poetry.org | python3 - --version 1.6.1
 export PATH="/home/yaniv.am/.local/bin:$PATH"
 
 echo "Installing db clients..."
-sudo apt install default-libmysqlclient-dev
+sudo apt install mysql-client
+# sudo apt install default-libmysqlclient-dev
 
 echo "Stuff.."
 stty -ixon

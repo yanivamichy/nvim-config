@@ -49,35 +49,6 @@ require('lazy').setup {
   require 'plugins.session_manager',
   require 'plugins.remote',
   require 'plugins.dadbod',
-  -- { 'chrisbra/csv.vim', lazy = false },
-  -- { 'mechatroner/rainbow_csv', lazy = false },
-  -- {
-  --   'cameron-wags/rainbow_csv.nvim',
-  --   config = true,
-  --   ft = {
-  --     'csv',
-  --     'tsv',
-  --     'csv_semicolon',
-  --     'csv_whitespace',
-  --     'csv_pipe',
-  --     'rfc_csv',
-  --     'rfc_semicolon',
-  --   },
-  --   cmd = {
-  --     'RainbowDelim',
-  --     'RainbowDelimSimple',
-  --     'RainbowDelimQuoted',
-  --     'RainbowMultiDelim',
-  --   },
-  -- },
-  -- {
-  --   'vidocqh/data-viewer.nvim',
-  --   opts = {},
-  --   dependencies = {
-  --     'nvim-lua/plenary.nvim',
-  --     'kkharji/sqlite.lua', -- Optional, sqlite support
-  --   },
-  -- },
 }
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

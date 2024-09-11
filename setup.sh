@@ -37,7 +37,10 @@ export PATH="/home/yaniv.am/.local/bin:$PATH"
 
 echo "Installing db clients..."
 sudo apt install mysql-client
-# sudo apt install default-libmysqlclient-dev
+sudo apt install default-libmysqlclient-dev
+
+# echo "Data viewers.."
+# sudo apt install visidata
 
 echo "Stuff.."
 stty -ixon

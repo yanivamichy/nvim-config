@@ -13,6 +13,7 @@ return { -- Autoformat
         python = { 'ruff_organize_imports', 'ruff_format' },
         json = { 'biome' },
         toml = { 'taplo' },
+        mysql = { 'sql_formatter' },
       },
       format_on_save = function(bufnr)
         local disable_filetypes = { c = true, cpp = true } -- Disable fallback for problematic languages

@@ -54,10 +54,10 @@ vim.keymap.set('n', 'cb', '"_cb')
 vim.keymap.set('n', '<M-c>b', 'cb')
 
 -- increase/decrease split window size
-vim.keymap.set('n', '<C-up>', ':res+1<CR>', { desc = 'Increase split window height' })
-vim.keymap.set('n', '<C-down>', ':res-1<CR>', { desc = 'Decrease split window height' })
-vim.keymap.set('n', '<C-right>', ':vert res+1<CR>', { desc = 'Increase split window width' })
-vim.keymap.set('n', '<C-left>', ':vert res-1<CR>', { desc = 'Decrease split window width' })
+vim.keymap.set('n', '<M-up>', ':res+1<CR>', { desc = 'Increase split window height' })
+vim.keymap.set('n', '<M-down>', ':res-1<CR>', { desc = 'Decrease split window height' })
+vim.keymap.set('n', '<M-right>', ':vert res+1<CR>', { desc = 'Increase split window width' })
+vim.keymap.set('n', '<M-left>', ':vert res-1<CR>', { desc = 'Decrease split window width' })
 
 -- set undo breakpoints
 vim.keymap.set('i', '<space>', '<C-G>u<space>', { noremap = true, silent = true })

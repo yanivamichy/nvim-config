@@ -1,5 +1,4 @@
 return {
-
   { -- Linting
     'mfussenegger/nvim-lint',
     dependencies = {
@@ -21,7 +20,7 @@ return {
         end,
       })
       require('mason-nvim-lint').setup {
-        ensured_installed = { 'mypy' },
+        ensured_installed = { 'mypy', 'sqlfluff' },
       }
     end,
   },

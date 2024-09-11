@@ -46,5 +46,5 @@ return {
       cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
     end,
   },
-  { 'mg979/vim-visual-multi', tag = 'v0.5.8' }, -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
+  { 'mg979/vim-visual-multi' }, -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
 }

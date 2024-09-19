@@ -14,6 +14,7 @@ return {
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
+      vim.cmd.hi 'LspSignatureActiveParameter guibg=#5f6687'
     end,
     opts = {
       on_colors = function(colors)

@@ -23,7 +23,7 @@ sudo apt install -y ripgrep
 echo "Installing clipboard tool..."
 sudo apt install xclip
 
-echo "Install Node Version Manager & Node..."
+echo "Install Node Version Manager (NPM) & Node..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 nvm install 22
 
@@ -32,6 +32,7 @@ sudo apt install python3-venv
 sudo apt install software-properties-common
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt install python3.11
+sudo apt install python3.11-dev
 curl -sSL https://install.python-poetry.org | python3 - --version 1.6.1
 export PATH="/home/yaniv.am/.local/bin:$PATH"
 

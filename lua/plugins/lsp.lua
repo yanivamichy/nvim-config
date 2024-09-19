@@ -111,8 +111,10 @@ return { -- LSP Configuration & Plugins, `:help lsp-vs-treesitter`.
           },
           basedpyright = {
             analysis = {
+              typeCheckingMode = 'off',
               diagnosticSeverityOverrides = {
-                reportMissingTypeStubs = 'none',
+                -- reportMissingTypeStubs = 'none',
+                -- reportImportCycles = 'warning',
               },
             },
           },

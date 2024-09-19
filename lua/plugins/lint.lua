@@ -1,3 +1,12 @@
+local function find_index(array, target)
+  for index, value in ipairs(array) do
+    if value == target then
+      return index
+    end
+  end
+  return nil
+end
+
 return {
   { -- Linting
     'mfussenegger/nvim-lint',
@@ -12,6 +21,10 @@ return {
         markdown = { 'markdownlint' },
         python = { 'mypy' },
       }
+      local mypy = lint.linters.mypy
+      local args = mypy.args
+      local index = find_index(args, '--python-executable')
+      args[index + 1] = require('utils.LanguageToolFinders').get_python_env
 
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = vim.api.nvim_create_augroup('lint', { clear = true }),

@@ -21,21 +21,12 @@ return {
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
-    -- dependencies = { 'hrsh7th/nvim-cmp' },
+    dependencies = { 'hrsh7th/nvim-cmp' },
     config = function()
       local autopairs = require 'nvim-autopairs'
       autopairs.setup {
         map_cr = false,
       }
-      f = function()
-        -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-G>u', true, false, true), 'n', false)
-        return autopairs.autopairs_cr()
-      end
-      -- vim.keymap.set('i', '<CR>', f, { expr = true, noremap = true, silent = true })
-      -- vim.api.nvim_set_keymap('i', '<cr>', function()
-      --   return autopairs.autopairs_cr()
-      -- end, { expr = true, noremap = true })
-      -- vim.api.nvim_set_keymap('i', '<cr>', 'v:lua.f()', { expr = true, noremap = true })
       vim.keymap.set('i', '<cr>', function()
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-G>u', true, false, true), 'n', false)
         return autopairs.autopairs_cr()

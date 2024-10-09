@@ -18,6 +18,9 @@ return {
           -- 'size',
           -- 'mtime',
         },
+        lsp_file_methods = {
+          timeout_ms = 10000,
+        },
         view_options = { show_hidden = true },
       }
       vim.keymap.set('n', '-', ':Oil --float<CR>', { desc = 'Open parent directory' })

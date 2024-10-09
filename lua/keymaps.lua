@@ -54,6 +54,8 @@ vim.keymap.set('n', 'ciw', '"_ciw')
 vim.keymap.set('n', '<M-c>iw', 'ciw')
 vim.keymap.set('n', 'cb', '"_cb')
 vim.keymap.set('n', '<M-c>b', 'cb')
+vim.keymap.set('v', 'c', '"_c')
+vim.keymap.set('v', '<M-c>', 'c')
 
 -- increase/decrease split window size
 vim.keymap.set('n', '<M-up>', ':res+1<CR>', { desc = 'Increase split window height' })

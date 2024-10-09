@@ -35,11 +35,13 @@ return {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       -- 'hrsh7th/cmp-nvim-lsp-signature-help',
+      'rcarriga/cmp-dap',
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local compare = require 'cmp.config.compare'
       luasnip.config.setup {}
 
       cmp.setup {
@@ -113,7 +115,30 @@ return {
           { name = 'path' },
           -- { name = 'nvim_lsp_signature_help' },
         },
+        sorting = {
+          priority_weight = 2,
+          comparators = {
+            -- compare.offset,
+            -- compare.exact,
+            -- compare.scopes,
+            -- compare.score,
+            -- compare.recently_used,
+            -- compare.locality,
+            -- compare.kind,
+            compare.sort_text,
+            -- compare.length,
+            -- compare.order,
+          },
+        },
+        enabled = function()
+          return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt' or require('cmp_dap').is_dap_buffer()
+        end,
       }
+      require('cmp').setup.filetype({ 'dap-repl', 'dapui_watches', 'dapui_hover' }, {
+        sources = {
+          { name = 'dap' },
+        },
+      })
     end,
   },
 }

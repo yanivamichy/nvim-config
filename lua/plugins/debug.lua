@@ -7,6 +7,7 @@ return {
       { 'williamboman/mason.nvim', config = true },
       'jay-babu/mason-nvim-dap.nvim',
       'mfussenegger/nvim-dap-python',
+      'nvim-telescope/telescope-dap.nvim',
     },
     keys = function(_, keys)
       local dap = require 'dap'
@@ -29,8 +30,8 @@ return {
       return {
         -- Basic debugging keymaps, feel free to change to your liking!
         { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },
-        { '<F11>', dap.step_into, desc = 'Debug: Step Into' },
         { '<F10>', dap.step_over, desc = 'Debug: Step Over' },
+        { '<F34>', dap.step_into, desc = 'Debug: Step Into' },
         { '<F3>', dap.step_out, desc = 'Debug: Step Out' },
         { '<F9>', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
         {
@@ -76,6 +77,10 @@ return {
       dap.listeners.after.event_initialized['dapui_config'] = dapui.open
       dap.listeners.before.event_terminated['dapui_config'] = dapui.close
       dap.listeners.before.event_exited['dapui_config'] = dapui.close
+
+      require('telescope').load_extension 'dap'
+      vim.keymap.set('n', '<leader>df', ':Telescope dap frames<CR>', { desc = '[D]ebug [F]rames' })
+      vim.keymap.set('n', '<leader>db', ':Telescope dap list_breakpoints<CR>', { desc = '[D]ebug [B]reakpoints' })
 
       dap.adapters.python = {
         type = 'executable',

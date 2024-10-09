@@ -50,6 +50,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
           -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
           i = { ['<M-w>'] = require('telescope.actions').delete_buffer },
         },
+        dynamic_preview_title = true,
       },
       -- pickers = {}
       extensions = {
@@ -80,7 +81,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>gsc', builtin.git_commits, { desc = '[G]it [S]earch [C]ommits' })
     vim.keymap.set('n', '<leader>gss', builtin.git_status, { desc = '[G]it [S]earch [S]tatus' })
     vim.keymap.set('n', '<leader>gsb', builtin.git_branches, { desc = '[G]it [S]earch [B]ranches' })
-    vim.keymap.set('n', '<leader>si', '<cmd>Telescope find_files hidden=true<cr>', { desc = '[S]earch [I]gnored files' })
+    vim.keymap.set('n', '<leader>si', '<cmd>Telescope find_files hidden=true no_ignore=true<cr>', { desc = '[S]earch [I]gnored files' })
 
     -- Slightly advanced example of overriding default behavior and theme
     vim.keymap.set('n', '<leader>/', function()

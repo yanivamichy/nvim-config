@@ -71,6 +71,7 @@ return {
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
           end
+          -- client.server_capabilities.semanticTokensProvider = nil
         end,
       })
 
@@ -177,8 +178,17 @@ return {
           end,
         },
       }
-      -- vim.api.nvim_set_hl(0, '@lsp.type.variable.python', { fg = '#d7f1fe', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@lsp.type.namespace.python', { fg = '#4EC9B0', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, '@lsp.type.function.python', { fg = '#DCDCAA', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, '@lsp.type.method.python', { fg = '#DCDCAA', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.function.defaultLibrary.python', { fg = '#DCDCAA', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, '@lsp.type.decorator.python', { fg = '#DCDCAA', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, '@keyword.import.python', { fg = '#BB9AF7', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, '@variable.python', { fg = '#70d6ff', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, '@keyword.function.python', { fg = '#7aa2f7', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, '@keyword.type.python', { fg = '#7aa2f7', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, '@keyword.operator.python', { fg = '#7aa2f7', bg = 'NONE' })
+      -- vim.api.nvim_set_hl(0, '@lsp.type.class.python', { fg = '#4FC1FF', bg = 'NONE' })
     end,
   },
   {

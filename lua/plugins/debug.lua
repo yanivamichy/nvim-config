@@ -13,7 +13,7 @@ return {
       local dap = require 'dap'
       local dapui = require 'dapui'
       vim.keymap.set({ 'n', 'v' }, '<F2>', dapui.eval, { desc = 'Debug: Evaluate' })
-      vim.keymap.set('x', '<F33>', function() -- keymap is <C-F9>
+      local execute_selected = function() -- keymap is <C-F9>
         local mode = vim.fn.mode()
         local lines
         if mode == 'V' then
@@ -25,12 +25,15 @@ return {
         local bufnr = dapui.elements.repl.buffer()
         local winid = vim.fn.bufwinid(bufnr)
         vim.api.nvim_win_set_cursor(winid, { vim.api.nvim_buf_line_count(bufnr), 0 })
-      end, { desc = 'Debug: Execute selected' })
+      end
+      vim.keymap.set('x', '<F33>', execute_selected, { desc = 'Debug: Execute selected' })
+      vim.keymap.set('x', '<C-F9>', execute_selected, { desc = 'Debug: Execute selected' })
 
       return {
         -- Basic debugging keymaps, feel free to change to your liking!
         { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },
         { '<F10>', dap.step_over, desc = 'Debug: Step Over' },
+        { '<C-F10>', dap.step_into, desc = 'Debug: Step Into' },
         { '<F34>', dap.step_into, desc = 'Debug: Step Into' },
         { '<F3>', dap.step_out, desc = 'Debug: Step Out' },
         { '<F9>', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },

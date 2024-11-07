@@ -25,6 +25,8 @@ return {
         vim.keymap.set('n', '<leader>uw', "<cmd>lua require('neotest').run.run(vim.fn.getcwd())<cr>", { desc = 'Run all [U]nit tests in [W]orkspace' }),
         vim.keymap.set('n', '<leader>ua', "<cmd>lua require('neotest').run.stop(vim.fn.getcwd())<cr>", { desc = '[A]bort all [U]nit tests' }),
         vim.keymap.set('n', '<leader>us', "<cmd>lua require('neotest').summary.toggle()<cr>", { desc = '[U]nit tests [S]ummary toggle' }),
+        vim.keymap.set('n', '<leader>uo', "<cmd>lua require('neotest').output.open({ enter = true })<cr>", { desc = '[U]nit tests [S]ummary toggle' }),
+        vim.keymap.set('n', '<leader>uO', "<cmd>lua require('neotest').output_panel.toggle({ enter = true })<cr>", { desc = '[U]nit tests [S]ummary toggle' }),
       }
     end,
   },

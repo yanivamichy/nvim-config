@@ -33,6 +33,7 @@ sudo apt install software-properties-common
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt install python3.11
 sudo apt install python3.11-dev
+sudo apt install python3.11-tk
 curl -sSL https://install.python-poetry.org | python3 - --version 1.6.1
 export PATH="/home/yaniv.am/.local/bin:$PATH"
 

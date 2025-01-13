@@ -4,7 +4,7 @@ return {
     dependencies = {
       { 'williamboman/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
-      'hrsh7th/nvim-cmp' ,
+      'hrsh7th/nvim-cmp',
       'hrsh7th/cmp-nvim-lsp',
       { 'j-hui/fidget.nvim', opts = {} }, -- Useful status updates for LSP.
       -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -37,7 +37,8 @@ return {
           map('<leader>lw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace symbols')
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gDD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gDT', vim.lsp.buf.type_definition, '[G]oto [T]ype definition')
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -129,6 +130,7 @@ return {
                 typeCheckingMode = 'off',
                 diagnosticSeverityOverrides = {
                   reportMissingImports = 'error',
+                  reportAttributeAccessIssue = 'error',
                   -- reportMissingTypeStubs = 'none',
                   -- reportImportCycles = 'warning',
                 },

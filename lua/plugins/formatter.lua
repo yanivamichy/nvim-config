@@ -14,6 +14,8 @@ return { -- Autoformat
         json = { 'biome' },
         toml = { 'taplo' },
         mysql = { 'sql_formatter' },
+        markdown = { 'prettier' },
+        ['_'] = { 'trim_whitespace' },
       },
       format_on_save = function(bufnr)
         local disable_filetypes = { c = true, cpp = true } -- Disable fallback for problematic languages

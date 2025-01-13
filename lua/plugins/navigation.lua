@@ -1,5 +1,5 @@
 require 'plugins.custom.messages'
-require 'plugins.custom.large_files'
+-- require 'plugins.custom.large_files'
 vim.g.tmux_navigator_no_mappings = 1
 return {
   {

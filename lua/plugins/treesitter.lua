@@ -9,7 +9,7 @@ return {
         highlight = {
           enable = true,
           disable = function(lang, bufnr)
-            return lang == 'csv' or vim.api.nvim_buf_line_count(bufnr) > 300
+            return lang == 'csv' or vim.api.nvim_buf_line_count(bufnr) > 10000
           end,
           -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
           --  If you are experiencing weird indenting issues, add the language to

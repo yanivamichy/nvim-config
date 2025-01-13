@@ -95,6 +95,17 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        -- pylsp = {},
+        -- jedi_language_server = {},
+        -- pylyzer = {},
+        -- pyre = {},
+        -- ast_grep = {},
+        -- harper_ls = {},
+        -- mutt_ls = {},
+        -- pyright = {},
+        -- basedpyright = {},
+        -- ruff = {},
+        -- ruff_lsp = {},
         basedpyright = {
           settings = {
             pyright = {
@@ -117,6 +128,7 @@ return {
               analysis = {
                 typeCheckingMode = 'off',
                 diagnosticSeverityOverrides = {
+                  reportMissingImports = 'error',
                   -- reportMissingTypeStubs = 'none',
                   -- reportImportCycles = 'warning',
                 },

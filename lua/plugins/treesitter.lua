@@ -8,11 +8,9 @@ return {
         auto_install = true,
         highlight = {
           enable = true,
-          -- disable = function(lang, bufnr)
-          --   return lang == 'csv' or vim.api.nvim_buf_line_count(bufnr) > 300
-          -- end,
-          disable = {'lua'},
-          -- },
+          disable = function(lang, bufnr)
+            return lang == 'csv' or vim.api.nvim_buf_line_count(bufnr) > 300
+          end,
           -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
           --  If you are experiencing weird indenting issues, add the language to
           --  the list of additional_vim_regex_highlighting and disabled languages for indent.
@@ -22,6 +20,7 @@ return {
       }
       vim.api.nvim_set_hl(0, '@variable.python', { fg = '#c0caf5', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@variable.member.python', { fg = '#c0caf5', bg = 'NONE' })
+      -- vim.api.nvim_set_hl(0, '@type.python', { fg = '#c0caf5', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@function.call.python', { fg = '#DCDCAA', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@function.method.python', { fg = '#DCDCAA', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@keyword.function.python', { fg = '#7aa2f7', bg = 'NONE' })

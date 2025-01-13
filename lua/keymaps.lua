@@ -42,9 +42,11 @@ vim.keymap.set('n', '<C-_>', 'gcc', { remap = true, desc = 'toggle comment' })
 vim.keymap.set('v', '<C-_>', 'gc', { remap = true, desc = 'toggle multiple comment' })
 
 -- mapping deleting and cutting
-vim.keymap.set({ 'n', 'v' }, ',p', '"+p')
-vim.keymap.set({ 'n', 'v' }, ',P', '"+P')
-vim.keymap.set({ 'n', 'v' }, ',y', '"+y', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'v' }, 'p', '"+p')
+vim.keymap.set({ 'n', 'v' }, 'P', '"+P')
+vim.keymap.set({ 'n', 'v' }, ',p', '""p')
+vim.keymap.set({ 'n', 'v' }, ',P', '""P')
+vim.keymap.set({ 'n', 'v' }, 'y', '"+y', { noremap = true, silent = true })
 vim.keymap.set({ 'n', 'v' }, 'x', '"_x')
 vim.keymap.set({ 'n', 'v' }, 'X', '"_X')
 

@@ -31,6 +31,7 @@ return {
 
       return {
         -- Basic debugging keymaps, feel free to change to your liking!
+        { '<F4>', dap.pause, desc = 'Debug: Pause' },
         { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },
         { '<F10>', dap.step_over, desc = 'Debug: Step Over' },
         { '<C-F10>', dap.step_into, desc = 'Debug: Step Into' },

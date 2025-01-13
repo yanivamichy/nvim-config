@@ -51,6 +51,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
           i = { ['<M-w>'] = require('telescope.actions').delete_buffer },
         },
         dynamic_preview_title = true,
+        preview = { treesitter = false },
       },
       -- pickers = {}
       extensions = {

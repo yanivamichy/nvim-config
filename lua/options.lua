@@ -1,6 +1,7 @@
 -- [[ Setting options ]]
 -- See `:help vim.opt`, :help option-list
-
+-- work around for bug #31675
+vim.hl = vim.highlight
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.

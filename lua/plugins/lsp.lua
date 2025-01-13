@@ -4,6 +4,8 @@ return {
     dependencies = {
       { 'williamboman/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
+      'hrsh7th/nvim-cmp' ,
+      'hrsh7th/cmp-nvim-lsp',
       { 'j-hui/fidget.nvim', opts = {} }, -- Useful status updates for LSP.
       -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis

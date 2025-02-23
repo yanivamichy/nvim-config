@@ -25,6 +25,8 @@ return {
       local args = mypy.args
       local index = find_index(args, '--python-executable')
       args[index + 1] = require('utils.LanguageToolFinders').get_python_env
+      local max_index = #args
+      args[max_index + 1] = '--strict'
 
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = vim.api.nvim_create_augroup('lint', { clear = true }),

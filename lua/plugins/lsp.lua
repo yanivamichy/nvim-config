@@ -37,8 +37,8 @@ return {
           map('<leader>lw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace symbols')
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-          map('gDD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-          map('gDT', vim.lsp.buf.type_definition, '[G]oto [T]ype definition')
+          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          -- map('gDT', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype definition')
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -139,32 +139,37 @@ return {
           },
         },
         ruff = {
-          lint = {
-            select = {
-              'E',
-              'W',
-              'F',
-              'I',
-              'B',
-              'A',
-              'N',
-              'COM',
-              'C4',
-              'LOG',
-              'SIM',
-              'TID',
-              'PT',
-              'ASYNC',
-              'SLF',
-              'YTT',
-              'FLY',
-              'PL',
-              'PERF',
-              'UP',
-              'RUF',
-            },
-            ignore = {
-              'PLR2004',
+          init_options = {
+            settings = {
+              lineLength = 120,
+              lint = {
+                select = {
+                  'E',
+                  'W',
+                  'F',
+                  'I',
+                  'B',
+                  'A',
+                  'N',
+                  'COM',
+                  'C4',
+                  'LOG',
+                  'SIM',
+                  'TID',
+                  'PT',
+                  'ASYNC',
+                  'SLF',
+                  'YTT',
+                  'FLY',
+                  'PL',
+                  'PERF',
+                  'UP',
+                  'RUF',
+                },
+                ignore = {
+                  'PLR2004',
+                },
+              },
             },
           },
         },

@@ -36,9 +36,9 @@ return {
       require('treesitter-context').setup {
         multiline_threshold = 1,
       }
-      vim.keymap.set('n', '[c', function()
+      vim.keymap.set('n', '[C', function()
         require('treesitter-context').go_to_context(vim.v.count1)
-      end, { silent = true })
+      end, { silent = true, desc = 'jump to [C]ontext' })
     end,
   },
 }

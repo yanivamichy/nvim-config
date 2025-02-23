@@ -17,6 +17,7 @@ vim.g.have_nerd_font = false
 require 'options'
 require 'keymaps'
 require 'autocommands'
+require 'commands'
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -38,17 +39,18 @@ require('lazy').setup {
   require 'plugins.editing',
   require 'plugins.navigation',
   require 'plugins.treesitter',
-  require 'plugins.lsp',
   require 'plugins.formatter',
+  require 'plugins.lsp',
+  require 'plugins.autocomplete',
   require 'plugins.lint',
   require 'plugins.debug',
-  require 'plugins.autocomplete',
   require 'plugins.unittest',
   require 'plugins.terminal',
   require 'plugins.git',
   require 'plugins.session_manager',
   require 'plugins.remote',
   require 'plugins.dadbod',
+  require 'plugins.obsidian',
 }
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

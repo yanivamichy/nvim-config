@@ -3,6 +3,7 @@ return { -- Autoformat
   dependencies = {
     { 'williamboman/mason.nvim', config = true },
     'zapling/mason-conform.nvim',
+    'neovim/nvim-lspconfig',
   },
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
@@ -25,7 +26,36 @@ return { -- Autoformat
         }
       end,
     }
+    -- require('conform').formatters.ruff_organize_imports = {
+    --   args = {
+    --     'check',
+    --     '--fix',
+    --     '--force-exclude',
+    --     '--select=I001',
+    --     '--line-length',
+    --     '120',
+    --     '--exit-zero',
+    --     '--no-cache',
+    --     '--stdin-filename',
+    --     '$FILENAME',
+    --     '-',
+    --   },
+    -- }
+    --
+    -- require('conform').formatters.ruff_format = {
+    --   args = {
+    --     'format',
+    --     '--force-exclude',
+    --     -- '--line-length',
+    --     -- '120',
+    --     '--stdin-filename',
+    --     '$FILENAME',
+    --     '-',
+    --   },
+    -- }
+
     vim.keymap.set('', '<leader>f', function()
+      -- require('conform').format { async = true, lsp_format = 'never' }
       require('conform').format { async = true, lsp_fallback = true }
     end, { desc = '[F]ormat buffer' })
 

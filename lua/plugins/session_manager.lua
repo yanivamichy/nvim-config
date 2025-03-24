@@ -5,6 +5,7 @@ end
 return {
   {
     'rmagatti/auto-session',
+    tag = 'v2.5.1',
     lazy = false,
     dependencies = {
       'nvim-telescope/telescope.nvim',
@@ -18,7 +19,7 @@ return {
       end
       require('auto-session').setup {
         suppress_dirs = { '~/', '~/Downloads', '/' },
-        create_enabled = false,
+        auto_create = false,
         pre_save_cmds = {
           function()
             local session_name = require('auto-session.lib').current_session_name()

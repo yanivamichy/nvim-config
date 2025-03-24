@@ -198,6 +198,7 @@ return {
             lspconfig[server_name].setup(server)
           end,
         },
+        automatic_installation = true,
       }
 
       vim.api.nvim_set_hl(0, '@lsp.type.namespace.python', { fg = '#4EC9B0', bg = 'NONE' })

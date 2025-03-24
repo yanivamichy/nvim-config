@@ -16,17 +16,21 @@ return {
     },
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
+      require('mason-nvim-lint').setup {
+        ensured_installed = { 'mypy', 'sqlfluff' },
+      }
       local lint = require 'lint'
+
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
         python = { 'mypy' },
       }
       local mypy = lint.linters.mypy
       local args = mypy.args
-      local index = find_index(args, '--python-executable')
-      args[index + 1] = require('utils.LanguageToolFinders').get_python_env
       local max_index = #args
       args[max_index + 1] = '--strict'
+      args[max_index + 2] = '--python-executabe'
+      args[max_index + 3] = require('utils.LanguageToolFinders').get_python_env
 
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = vim.api.nvim_create_augroup('lint', { clear = true }),
@@ -34,9 +38,6 @@ return {
           lint.try_lint()
         end,
       })
-      require('mason-nvim-lint').setup {
-        ensured_installed = { 'mypy', 'sqlfluff' },
-      }
     end,
   },
 }

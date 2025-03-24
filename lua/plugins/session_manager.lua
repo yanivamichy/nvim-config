@@ -17,8 +17,8 @@ return {
         vim.cmd 'wa'
       end
       require('auto-session').setup {
-        auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
-        auto_session_create_enabled = false,
+        suppress_dirs = { '~/', '~/Downloads', '/' },
+        create_enabled = false,
         pre_save_cmds = {
           function()
             local session_name = require('auto-session.lib').current_session_name()

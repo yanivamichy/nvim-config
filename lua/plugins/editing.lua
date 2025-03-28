@@ -4,20 +4,20 @@ return {
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
-      -- Better Around/Inside textobjects
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-      --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
+      require('mini.move').setup {
+        mappings = {
+          line_left = '',
+          line_right = '',
+          line_up = '',
+          line_down = '',
+        },
+      }
       require('mini.surround').setup()
+      require('mini.splitjoin').setup { mappings = { toggle = '<leader>ts' } }
     end,
   },
+
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
@@ -49,10 +49,31 @@ return {
       {
         '<leader>p',
         function()
-          -- require('telescope').extensions.yank_history.yank_history {}
           vim.fn.execute 'YankyRingHistory'
         end,
         desc = 'Open Yank History',
+      },
+      {
+        '<leader>P',
+        function()
+          local history = {}
+          for index, value in pairs(require('yanky.history').all()) do
+            value.history_index = index
+            history[index] = value
+          end
+
+          local action = require('yanky.picker').actions.put('P', false)
+          if action == nil then
+            return
+          end
+
+          vim.ui.select(history, {
+            prompt = 'Ring history',
+            format_item = function(item)
+              return item.regcontents and item.regcontents:gsub('\n', '\\n') or ''
+            end,
+          }, action)
+        end,
       },
     },
   },

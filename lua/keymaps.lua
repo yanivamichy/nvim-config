@@ -1,5 +1,6 @@
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+--
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -44,8 +45,8 @@ vim.keymap.set('v', '<C-_>', 'gc', { remap = true, desc = 'toggle multiple comme
 -- mapping deleting and cutting
 vim.keymap.set({ 'n', 'v' }, 'p', '"+p')
 vim.keymap.set({ 'n', 'v' }, 'P', '"+P')
-vim.keymap.set({ 'n', 'v' }, ',p', '""p')
-vim.keymap.set({ 'n', 'v' }, ',P', '""P')
+-- vim.keymap.set({ 'n', 'v' }, '<M-p>', '""p')
+-- vim.keymap.set({ 'n', 'v' }, '<M-P>', '""P')
 vim.keymap.set({ 'n', 'v' }, 'y', '"+y', { noremap = true, silent = true })
 vim.keymap.set({ 'n', 'v' }, 'x', '"_x')
 vim.keymap.set({ 'n', 'v' }, 'X', '"_X')

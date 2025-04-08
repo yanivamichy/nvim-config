@@ -78,3 +78,5 @@ return {
     },
   },
 }
+-- "bullets.vim"
+-- "markdown-toc"

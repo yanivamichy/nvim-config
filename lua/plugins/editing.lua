@@ -31,9 +31,21 @@ return {
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-G>u', true, false, true), 'n', false)
         return autopairs.autopairs_cr()
       end, { expr = true, noremap = true, replace_keycodes = false })
+
+      local Rule = require 'nvim-autopairs.rule'
+      local cond = require 'nvim-autopairs.conds'
+      autopairs.add_rules {
+        Rule('$$', '$$', { 'markdown', 'tex' }):with_move(cond.after_text '$$'),
+      }
       -- If you want to automatically add `(` after selecting a function or method
       local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
       local cmp = require 'cmp'
+      local handlers = require 'nvim-autopairs.completion.handlers'
+      local Kind = cmp.lsp.CompletionItemKind
+      cmp_autopairs.filetypes.tex = { ['{'] = {
+        kind = { Kind.Function },
+        handler = handlers['*'],
+      } }
       cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
     end,
   },
@@ -78,5 +90,3 @@ return {
     },
   },
 }
--- "bullets.vim"
--- "markdown-toc"

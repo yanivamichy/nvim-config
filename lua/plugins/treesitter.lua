@@ -1,5 +1,6 @@
 return {
   { -- Highlight, edit, and navigate code
+    dependencies = { 'nvim-treesitter/playground' },
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = function()
@@ -10,7 +11,7 @@ return {
         highlight = {
           enable = true,
           disable = function(lang, bufnr)
-            local langs_to_ignore = { csv = true, latex = true }
+            local langs_to_ignore = { csv = true, latex = true, markdown = false }
             return langs_to_ignore[lang] or vim.api.nvim_buf_line_count(bufnr) > 10000
           end,
           -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.

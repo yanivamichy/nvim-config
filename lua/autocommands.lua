@@ -8,3 +8,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufNewFile' }, {
+  callback = function()
+    vim.schedule(function()
+      if vim.bo.filetype == '' then
+        vim.bo.filetype = 'markdown'
+      end
+    end)
+  end,
+})

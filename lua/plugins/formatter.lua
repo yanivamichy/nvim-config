@@ -16,16 +16,30 @@ return { -- Autoformat
         toml = { 'taplo' },
         mysql = { 'sql_formatter' },
         markdown = { 'prettier' },
+        tex = { 'tex-fmt', 'bibtex-tidy' },
+        -- tex = {'tex-fmt'},
         ['_'] = { 'trim_whitespace' },
       },
-      format_on_save = function(bufnr)
-        local disable_filetypes = { c = true, cpp = true } -- Disable fallback for problematic languages
-        return {
-          timeout_ms = 500,
-          lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-        }
-      end,
+      format_on_save = false,
+      -- format_on_save = function(bufnr)
+      --   local disable_filetypes = { c = true, cpp = true } -- Disable fallback for problematic languages
+      --   return {
+      --     timeout_ms = 500,
+      --     lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+      --   }
+      -- end,
     }
+
+
+
+
+
+
+
+
+
+
+
     -- require('conform').formatters.ruff_organize_imports = {
     --   args = {
     --     'check',

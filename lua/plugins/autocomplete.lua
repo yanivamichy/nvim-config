@@ -37,6 +37,8 @@ return {
       -- 'hrsh7th/cmp-nvim-lsp-signature-help',
       'mfussenegger/nvim-dap',
       'rcarriga/cmp-dap',
+      'kdheepak/cmp-latex-symbols',
+      'micangl/cmp-vimtex',
     },
     config = function()
       -- See `:help cmp`
@@ -114,15 +116,16 @@ return {
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          -- { name = 'vimtex' },
           -- { name = 'nvim_lsp_signature_help' },
         },
         sorting = {
           priority_weight = 2,
           comparators = {
             -- compare.offset,
-            -- compare.exact,
+            compare.exact,
             -- compare.scopes,
-            -- compare.score,
+            compare.score,
             -- compare.recently_used,
             -- compare.locality,
             -- compare.kind,
@@ -138,6 +141,11 @@ return {
       require('cmp').setup.filetype({ 'dap-repl', 'dapui_watches', 'dapui_hover' }, {
         sources = {
           { name = 'dap' },
+        },
+      })
+      require('cmp').setup.filetype('markdown', {
+        sources = {
+          { name = 'latex_symbols', option = { strategy = 2 } },
         },
       })
     end,

@@ -6,10 +6,12 @@ return {
       require('nvim-treesitter.configs').setup {
         ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
         auto_install = true,
+        ignore_install = { 'latex' },
         highlight = {
           enable = true,
           disable = function(lang, bufnr)
-            return lang == 'csv' or vim.api.nvim_buf_line_count(bufnr) > 10000
+            local langs_to_ignore = { csv = true, latex = true }
+            return langs_to_ignore[lang] or vim.api.nvim_buf_line_count(bufnr) > 10000
           end,
           -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
           --  If you are experiencing weird indenting issues, add the language to

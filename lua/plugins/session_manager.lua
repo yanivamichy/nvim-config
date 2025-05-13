@@ -44,3 +44,4 @@ return {
     end,
   },
 }
+-- Shatur/neovim-session-manager

@@ -183,6 +183,8 @@ return {
           },
         },
         vimls = {},
+        marksman = {},
+        texlab = {}
       }
 
       local lspconfig = require 'lspconfig'

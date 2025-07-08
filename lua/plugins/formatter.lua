@@ -5,6 +5,7 @@ return { -- Autoformat
     'zapling/mason-conform.nvim',
     'neovim/nvim-lspconfig',
   },
+  tag = 'v9.0.0',
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     require('conform').setup {
@@ -15,12 +16,11 @@ return { -- Autoformat
         json = { 'biome' },
         toml = { 'taplo' },
         mysql = { 'sql_formatter' },
-        markdown = { 'prettier' },
+        -- markdown = { 'prettier' },
+        css = { 'prettier' },
         tex = { 'tex-fmt', 'bibtex-tidy' },
-        -- tex = {'tex-fmt'},
         ['_'] = { 'trim_whitespace' },
       },
-      format_on_save = false,
       -- format_on_save = function(bufnr)
       --   local disable_filetypes = { c = true, cpp = true } -- Disable fallback for problematic languages
       --   return {
@@ -29,16 +29,6 @@ return { -- Autoformat
       --   }
       -- end,
     }
-
-
-
-
-
-
-
-
-
-
 
     -- require('conform').formatters.ruff_organize_imports = {
     --   args = {

@@ -34,9 +34,26 @@ return {
 
       local Rule = require 'nvim-autopairs.rule'
       local cond = require 'nvim-autopairs.conds'
+      local function or_cond(c1, c2)
+        return function(opts)
+          return c1(opts) or c2(opts)
+        end
+      end
       autopairs.add_rules {
-        Rule('$$', '$$', { 'markdown', 'tex' }):with_move(cond.after_text '$$'),
+        Rule('$', '$', { 'markdown', 'tex' }):with_move(cond.not_before_text '$'):with_pair(function(opts)
+          local after = cond.after_text '$'(opts)
+          local before = cond.not_before_text '$'(opts)
+          if before == nil then
+            before = true
+          end
+          return before or after
+        end),
       }
+
+      autopairs.add_rules {
+        Rule('$$', '$$', { 'markdown', 'tex' }):with_move(cond.after_text '$$'):with_pair(cond.not_before_text '$'),
+      }
+
       -- If you want to automatically add `(` after selecting a function or method
       local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
       local cmp = require 'cmp'
@@ -89,4 +106,6 @@ return {
       },
     },
   },
+
+  -- { 'mbbill/undotree' },
 }

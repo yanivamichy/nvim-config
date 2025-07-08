@@ -66,3 +66,6 @@ vim.keymap.set('i', '(', '<C-G>u(', { noremap = true, silent = true })
 vim.keymap.set('i', '<', '<C-G>u<', { noremap = true, silent = true })
 vim.keymap.set('i', '[', '<C-G>u[', { noremap = true, silent = true })
 vim.keymap.set('i', '{', '<C-G>u{', { noremap = true, silent = true })
+
+-- jump with link
+vim.keymap.set('n', '<CR>', '<C-]>', { noremap = true, silent = true })

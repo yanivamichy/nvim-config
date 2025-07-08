@@ -1,9 +1,11 @@
 require 'plugins.custom.messages'
--- require 'plugins.custom.large_files'
+require 'plugins.custom.large_files'
 vim.g.tmux_navigator_no_mappings = 1
+
 return {
   {
     'stevearc/oil.nvim',
+    version = '2.15.0',
     opts = {},
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
@@ -26,6 +28,7 @@ return {
         view_options = { show_hidden = true },
       }
       vim.keymap.set('n', '-', ':Oil --float<CR>', { desc = 'Open parent directory' })
+      vim.keymap.set('n', '<leader>o-', ':Oil --float ~/renders<CR>', { desc = 'Open renders directory' })
     end,
   },
 
@@ -61,16 +64,6 @@ return {
           local node = state.tree:get_node()
           local path = node:get_id()
           vim.fn.jobstart({ 'xdg-open', path }, { detach = true })
-
-          -- -- Windows: Without removing the file from the path, it opens in code.exe instead of explorer.exe
-          -- local p
-          -- local lastSlashIndex = path:match '^.+()\\[^\\]*$' -- Match the last slash and everything before it
-          -- if lastSlashIndex then
-          --   p = path:sub(1, lastSlashIndex - 1) -- Extract substring before the last slash
-          -- else
-          --   p = path -- If no slash found, return original path
-          -- end
-          -- vim.cmd('silent !start explorer ' .. p)
         end,
       },
     },
@@ -93,15 +86,4 @@ return {
       -- { '<M-o>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
     },
   },
-  -- {
-  --   'chrishrb/gx.nvim',
-  --   keys = { { 'gx', '<cmd>Browse<cr>', mode = { 'n', 'x' } } },
-  --   cmd = { 'Browse' },
-  --   init = function()
-  --     vim.g.netrw_nogx = 1 -- disable netrw gx
-  --   end,
-  --   dependencies = { 'nvim-lua/plenary.nvim' }, -- Required for Neovim < 0.10.0
-  --   config = true, -- default settings
-  --   submodules = false, -- not needed, submodules are required only for tests
-  -- },
 }

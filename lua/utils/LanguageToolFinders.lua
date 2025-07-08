@@ -14,6 +14,6 @@ function M.get_python_env()
       return abs_path
     end
   end
-  return '/usr/bin/python3'
+  return vim.fn.exepath("python3")
 end
 return M

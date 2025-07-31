@@ -1,6 +1,5 @@
 require 'plugins.custom.messages'
-require 'plugins.custom.large_files'
-vim.g.tmux_navigator_no_mappings = 1
+-- require 'plugins.custom.large_files'
 
 return {
   {
@@ -28,7 +27,7 @@ return {
         view_options = { show_hidden = true },
       }
       vim.keymap.set('n', '-', ':Oil --float<CR>', { desc = 'Open parent directory' })
-      vim.keymap.set('n', '<leader>o-', ':Oil --float ~/renders<CR>', { desc = 'Open renders directory' })
+      vim.keymap.set('n', '<leader>m-', ':Oil --float ~/renders<CR>', { desc = 'Open renders directory' })
     end,
   },
 
@@ -71,19 +70,131 @@ return {
 
   {
     'christoomey/vim-tmux-navigator',
+    init = function()
+      vim.g.tmux_navigator_no_mappings = 1
+    end,
     cmd = {
       'TmuxNavigateLeft',
       'TmuxNavigateDown',
       'TmuxNavigateUp',
       'TmuxNavigateRight',
-      -- 'TmuxNavigatePrevious',
     },
     keys = {
-      { '<c-h>', ':TmuxNavigateLeft<cr>' },
-      { '<c-j>', ':TmuxNavigateDown<cr>' },
-      { '<c-k>', ':TmuxNavigateUp<cr>' },
-      { '<c-l>', ':TmuxNavigateRight<cr>' },
-      -- { '<M-o>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
+      { '<c-h>', ':TmuxNavigateLeft<cr>', desc = 'Tmux Navigate Left' },
+      { '<c-j>', ':TmuxNavigateDown<cr>', desc = 'Tmux Navigate Down' },
+      { '<c-k>', ':TmuxNavigateUp<cr>', desc = 'Tmux Navigate Up' },
+      { '<c-l>', ':TmuxNavigateRight<cr>', desc = 'Tmux Navigate Right' },
+    },
+  },
+
+  {
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    opts = {},
+    keys = {
+      {
+        's',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').jump()
+        end,
+        desc = 'Flash',
+      },
+      {
+        'S',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').treesitter()
+        end,
+        desc = 'Flash Treesitter',
+      },
+      {
+        'r',
+        mode = 'o',
+        function()
+          require('flash').remote()
+        end,
+        desc = 'Remote Flash',
+      },
+      {
+        'R',
+        mode = { 'o', 'x' },
+        function()
+          require('flash').treesitter_search()
+        end,
+        desc = 'Treesitter Search',
+      },
+      {
+        '<c-s>',
+        mode = { 'c' },
+        function()
+          require('flash').toggle()
+        end,
+        desc = 'Toggle Flash Search',
+      },
+    },
+  },
+
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('harpoon'):setup {
+        settings = { save_on_toggle = true },
+      }
+    end,
+    keys = {
+      {
+        '<leader>a',
+        function()
+          require('harpoon'):list():add()
+        end,
+        desc = 'harpoon file',
+      },
+      {
+        '<leader>h',
+        function()
+          local harpoon = require 'harpoon'
+          harpoon.ui:toggle_quick_menu(harpoon:list())
+        end,
+        desc = 'harpoon quick menu',
+      },
+      {
+        '<leader>1',
+        function()
+          require('harpoon'):list():select(1)
+        end,
+        desc = 'harpoon to file 1',
+      },
+      {
+        '<leader>2',
+        function()
+          require('harpoon'):list():select(2)
+        end,
+        desc = 'harpoon to file 2',
+      },
+      {
+        '<leader>3',
+        function()
+          require('harpoon'):list():select(3)
+        end,
+        desc = 'harpoon to file 3',
+      },
+      {
+        '<leader>4',
+        function()
+          require('harpoon'):list():select(4)
+        end,
+        desc = 'harpoon to file 4',
+      },
+      {
+        '<leader>5',
+        function()
+          require('harpoon'):list():select(5)
+        end,
+        desc = 'harpoon to file 5',
+      },
     },
   },
 }

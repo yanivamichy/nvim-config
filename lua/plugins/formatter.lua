@@ -1,65 +1,27 @@
 return { -- Autoformat
   'stevearc/conform.nvim',
   dependencies = {
-    { 'williamboman/mason.nvim', config = true },
+    'williamboman/mason.nvim',
     'zapling/mason-conform.nvim',
-    'neovim/nvim-lspconfig',
   },
-  tag = 'v9.0.0',
+  tag = 'v8.4.0',
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     require('conform').setup {
-      notify_on_error = false,
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'ruff_organize_imports', 'ruff_format' },
         json = { 'biome' },
         toml = { 'taplo' },
         mysql = { 'sql_formatter' },
-        -- markdown = { 'prettier' },
-        css = { 'prettier' },
+        markdown = { 'prettierd' },
+        css = { 'prettierd' },
         tex = { 'tex-fmt', 'bibtex-tidy' },
         ['_'] = { 'trim_whitespace' },
       },
-      -- format_on_save = function(bufnr)
-      --   local disable_filetypes = { c = true, cpp = true } -- Disable fallback for problematic languages
-      --   return {
-      --     timeout_ms = 500,
-      --     lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-      --   }
-      -- end,
     }
 
-    -- require('conform').formatters.ruff_organize_imports = {
-    --   args = {
-    --     'check',
-    --     '--fix',
-    --     '--force-exclude',
-    --     '--select=I001',
-    --     '--line-length',
-    --     '120',
-    --     '--exit-zero',
-    --     '--no-cache',
-    --     '--stdin-filename',
-    --     '$FILENAME',
-    --     '-',
-    --   },
-    -- }
-    --
-    -- require('conform').formatters.ruff_format = {
-    --   args = {
-    --     'format',
-    --     '--force-exclude',
-    --     -- '--line-length',
-    --     -- '120',
-    --     '--stdin-filename',
-    --     '$FILENAME',
-    --     '-',
-    --   },
-    -- }
-
-    vim.keymap.set('', '<leader>f', function()
-      -- require('conform').format { async = true, lsp_format = 'never' }
+    vim.keymap.set('n', '<leader>f', function()
       require('conform').format { async = true, lsp_fallback = true }
     end, { desc = '[F]ormat buffer' })
 

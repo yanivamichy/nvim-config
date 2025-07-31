@@ -62,5 +62,8 @@ vim.opt.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpo
 
 -- default coomment characters
 -- vim.opt.commentstring = '# %s'
+
+-- default indetation
 vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.expandtab = false

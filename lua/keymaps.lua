@@ -1,13 +1,10 @@
 -- [[ Basic Keymaps ]]
---  See `:help vim.keymap.set()`
---
-
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Toggle diagnostic [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -24,9 +21,6 @@ vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
@@ -45,8 +39,8 @@ vim.keymap.set('v', '<C-_>', 'gc', { remap = true, desc = 'toggle multiple comme
 -- mapping deleting and cutting
 vim.keymap.set({ 'n', 'v' }, 'p', '"+p')
 vim.keymap.set({ 'n', 'v' }, 'P', '"+P')
--- vim.keymap.set({ 'n', 'v' }, '<M-p>', '""p')
--- vim.keymap.set({ 'n', 'v' }, '<M-P>', '""P')
+vim.keymap.set({ 'n', 'v' }, '<M-p>', '""p')
+vim.keymap.set({ 'n', 'v' }, '<M-P>', '""P')
 vim.keymap.set({ 'n', 'v' }, 'y', '"+y', { noremap = true, silent = true })
 vim.keymap.set({ 'n', 'v' }, 'x', '"_x')
 vim.keymap.set({ 'n', 'v' }, 'X', '"_X')
@@ -68,4 +62,4 @@ vim.keymap.set('i', '[', '<C-G>u[', { noremap = true, silent = true })
 vim.keymap.set('i', '{', '<C-G>u{', { noremap = true, silent = true })
 
 -- jump with link
-vim.keymap.set('n', '<CR>', '<C-]>', { noremap = true, silent = true })
+-- vim.keymap.set('n', '<CR>', '<C-]>', { noremap = true, silent = true })

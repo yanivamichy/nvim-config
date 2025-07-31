@@ -5,7 +5,7 @@ local tikz_doc_template = [[
 \usepackage{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{quantikz2}
-\usetikzlibrary{shapes.arrows, shadows, optics}
+\usetikzlibrary{shapes.arrows, shadows, optics, decorations}
 \usepackage{pgfgantt}
 \makeatletter
 \tikzset{

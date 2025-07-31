@@ -13,7 +13,17 @@ return {
           line_down = '',
         },
       }
-      require('mini.surround').setup()
+      require('mini.surround').setup {
+        mappings = {
+          add = '<c-s>a',
+          delete = '<c-s>d',
+          find = '<c-s>f',
+          find_left = '<c-s>F',
+          highlight = '<c-s>h',
+          replace = '<c-s>r',
+          update_n_lines = '<c-s>n',
+        },
+      }
       require('mini.splitjoin').setup { mappings = { toggle = '<leader>ts' } }
     end,
   },
@@ -34,11 +44,6 @@ return {
 
       local Rule = require 'nvim-autopairs.rule'
       local cond = require 'nvim-autopairs.conds'
-      local function or_cond(c1, c2)
-        return function(opts)
-          return c1(opts) or c2(opts)
-        end
-      end
       autopairs.add_rules {
         Rule('$', '$', { 'markdown', 'tex' }):with_move(cond.not_before_text '$'):with_pair(function(opts)
           local after = cond.after_text '$'(opts)
@@ -59,18 +64,61 @@ return {
       local cmp = require 'cmp'
       local handlers = require 'nvim-autopairs.completion.handlers'
       local Kind = cmp.lsp.CompletionItemKind
-      cmp_autopairs.filetypes.tex = { ['{'] = {
-        kind = { Kind.Function },
-        handler = handlers['*'],
-      } }
+      cmp_autopairs.filetypes.tex =
+        { ['{'] = {
+          kind = { Kind.Function },
+          handler = handlers['*'],
+        } }
       cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
     end,
   },
 
-  { 'mg979/vim-visual-multi' }, -- :help visual-multi, tutorial: vim -Nu path/to/visual-multi/tutorialrc
+  {
+    'jake-stewart/multicursor.nvim',
+    config = function()
+      local mc = require 'multicursor-nvim'
+      mc.setup()
+
+      vim.keymap.set({ 'n', 'x' }, '<C-M-k>', function()
+        mc.lineAddCursor(-1)
+      end, { desc = 'Multi Cursor - Add Down' })
+      vim.keymap.set({ 'n', 'x' }, '<C-M-j>', function()
+        mc.lineAddCursor(1)
+      end, { desc = 'Multi Cursor - Add Up' })
+      vim.keymap.set({ 'n', 'x' }, '<c-q>', mc.toggleCursor, { desc = 'Multi Cursor - Toggle Cursor' })
+      vim.keymap.set({ 'n', 'x' }, '<C-M-h>', function()
+        mc.lineSkipCursor(-1)
+      end, { desc = 'Multi Cursor - Skip Down' })
+      vim.keymap.set({ 'n', 'x' }, '<C-M-l>', function()
+        mc.lineSkipCursor(1)
+      end, { desc = 'Multi Cursor - Skip Up' })
+
+      mc.addKeymapLayer(function(layerSet)
+        layerSet({ 'n', 'x' }, '<left>', mc.prevCursor)
+        layerSet({ 'n', 'x' }, '<right>', mc.nextCursor)
+        layerSet({ 'n', 'x' }, '<leader>x', mc.deleteCursor)
+        layerSet('n', '<esc>', function()
+          if not mc.cursorsEnabled() then
+            mc.enableCursors()
+          else
+            mc.clearCursors()
+          end
+        end)
+      end)
+      local hl = vim.api.nvim_set_hl
+      hl(0, 'MultiCursorCursor', { reverse = true })
+      hl(0, 'MultiCursorVisual', { link = 'Visual' })
+      hl(0, 'MultiCursorSign', { link = 'SignColumn' })
+      hl(0, 'MultiCursorMatchPreview', { link = 'Search' })
+      hl(0, 'MultiCursorDisabledCursor', { reverse = true })
+      hl(0, 'MultiCursorDisabledVisual', { link = 'Visual' })
+      hl(0, 'MultiCursorDisabledSign', { link = 'SignColumn' })
+    end,
+  },
 
   {
     'gbprod/yanky.nvim',
+    event = 'VimEnter',
     opts = {
       highlight = { on_put = false, on_yank = false },
     },
@@ -103,9 +151,15 @@ return {
             end,
           }, action)
         end,
+        desc = 'Open Yank History - Reversed',
       },
     },
   },
 
-  -- { 'mbbill/undotree' },
+  {
+    'mbbill/undotree',
+    init = function()
+      vim.keymap.set('n', '<leader>tu', ':UndotreeToggle<CR>', { desc = '[T]oggle [U]ndoTree' })
+    end,
+  },
 }

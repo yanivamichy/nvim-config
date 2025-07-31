@@ -1,5 +1,3 @@
--- Adds git related signs to the gutter, as well as utilities for managing changes
--- See `:help gitsigns` to understand what the configuration keys do
 return {
   {
     'lewis6991/gitsigns.nvim',
@@ -39,27 +37,21 @@ return {
 
         -- Actions
         -- visual mode
-        map('v', '<leader>hs', function()
-          gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, { desc = 'stage git hunk' })
-        map('v', '<leader>hr', function()
-          gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-        end, { desc = 'reset git hunk' })
+        map('v', '<leader>gs', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'stage git hunk' })
+        map('v', '<leader>gr', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'reset git hunk' })
         -- normal mode
-        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
-        map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
-        map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
-        map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
-        map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
-        map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
-        map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
-        map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
-        map('n', '<leader>hD', function()
-          gitsigns.diffthis '@'
-        end, { desc = 'git [D]iff against last commit' })
+        map('n', '<leader>gs', gitsigns.stage_hunk, { desc = '[G]it [s]tage hunk' })
+        map('n', '<leader>gr', gitsigns.reset_hunk, { desc = '[G]it [r]eset hunk' })
+        map('n', '<leader>gS', gitsigns.stage_buffer, { desc = '[G]it [S]tage buffer' })
+        map('n', '<leader>gu', gitsigns.undo_stage_hunk, { desc = '[G]it [u]ndo stage hunk' })
+        map('n', '<leader>gR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
+        -- map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
+        -- map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
+        -- map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
+        map('n', '<leader>gL', function() gitsigns.diffthis '@' end, { desc = 'git diff against [L]ast commit' })
         -- Toggles
-        map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
-        map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
+        map('n', '<leader>gB', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
+        map('n', '<leader>gD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
       end,
     },
   },
@@ -67,13 +59,20 @@ return {
   {
     'tpope/vim-fugitive',
     event = 'VimEnter',
+    init = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'fugitive',
+        callback = function()
+          vim.cmd 'vert resize 40'
+          vim.wo.winfixwidth = true
+        end,
+      })
+    end,
     keys = {
       { '<leader>gd', ':Gvdiff<CR>', desc = 'Open [G]it [D]iff' },
-      { '<leader>gg', ':topleft vert G<CR>:vert res 40<CR>:set wfw<CR>', desc = 'Open [G]it tool' },
+      { '<leader>gg', ':topleft vert G<CR>', desc = 'Open [G]it tool' },
       { '<leader>gc', ':Git commit<CR>', desc = '[G]it [C]ommit' },
+      { '<leader>gb', ':Git blame<CR>', desc = '[G]it [B]lame' },
     },
-  },
-  {
-    'tpope/vim-rhubarb',
   },
 }

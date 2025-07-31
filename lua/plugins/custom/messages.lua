@@ -8,9 +8,7 @@ local function toggle_buffer(name)
     vim.fn.execute('bw ' .. name)
     return nil
   end
-  if vim.fn.bufexists(name) > 0 then
-    vim.fn.execute('bw ' .. name)
-  end
+  if vim.fn.bufexists(name) > 0 then vim.fn.execute('bw ' .. name) end
 
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_name(buf, name)
@@ -37,6 +35,4 @@ local function display_cmd(command, buf_name)
   end
 end
 
-vim.keymap.set('n', '<leader>m', function()
-  display_cmd 'messages'
-end, { desc = 'Toggle [M]essages' })
+vim.keymap.set('n', '<leader>tm', function() display_cmd 'messages' end, { desc = '[T]oggle [M]essages' })

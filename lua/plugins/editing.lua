@@ -15,13 +15,13 @@ return {
       }
       require('mini.surround').setup {
         mappings = {
-          add = '<c-s>a',
-          delete = '<c-s>d',
-          find = '<c-s>f',
-          find_left = '<c-s>F',
-          highlight = '<c-s>h',
-          replace = '<c-s>r',
-          update_n_lines = '<c-s>n',
+          add = '<M-s>a',
+          delete = '<M-s>d',
+          find = '<M-s>f',
+          find_left = '<M-s>F',
+          highlight = '<M-s>h',
+          replace = '<M-s>r',
+          update_n_lines = '<M-s>n',
         },
       }
       require('mini.splitjoin').setup { mappings = { toggle = '<leader>ts' } }

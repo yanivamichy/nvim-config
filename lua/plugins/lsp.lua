@@ -1,5 +1,10 @@
 -- vim.lsp.inlay_hint.enable()
 
+local hover = vim.lsp.buf.hover
+vim.lsp.buf.hover = function()
+  return hover { max_width = 100, max_height = 14, border = 'single' }
+end
+
 return {
   {
     'folke/lazydev.nvim',
@@ -12,17 +17,17 @@ return {
     opts = {},
   },
 
+
   {
     'neovim/nvim-lspconfig',
     version = '2.3.0',
     dependencies = {
       'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+        group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
         callback = function(event)
           local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
@@ -73,27 +78,16 @@ return {
       local servers = {
         basedpyright = {
           settings = {
-            pyright = {
+            python = { pythonPath = require('utils.LanguageToolFinders').get_python_env() },
+            basedpyright = {
               disableOrganizeImports = true,
-            },
-            python = {
               analysis = {
-                diagnosticMode = 'openFilesOnly',
                 typeCheckingMode = 'off',
                 diagnosticSeverityOverrides = {
                   reportMissingModuleSource = 'error',
                   reportInvalidTypeForm = 'none',
-                  reportMissingImports = 'error',
                   reportUndefinedVariable = 'none',
-                },
-              },
-              pythonPath = require('utils.LanguageToolFinders').get_python_env(),
-            },
-            basedpyright = {
-              analysis = {
-                typeCheckingMode = 'off',
-                diagnosticSeverityOverrides = {
-                  reportMissingImports = 'error',
+                  reportMissingImports = 'none',
                   reportAttributeAccessIssue = 'error',
                 },
               },
@@ -147,33 +141,22 @@ return {
         },
         vimls = {},
         harper_ls = {},
-        -- marksman = {},
-        -- texlab = {},
       }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
+
       local lspconfig = require 'lspconfig'
-      require('mason-lspconfig').setup {
-        ensure_installed = vim.tbl_keys(servers or {}),
-        handlers = {
-          function(server_name)
-            local server = servers[server_name]
-            if not server then
-              return
-            end
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            lspconfig[server_name].setup(server)
-          end,
-        },
-        automatic_installation = true,
-      }
+      for server, config in pairs(servers) do
+        config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, config.capabilities or {})
+        lspconfig[server].setup(config)
+      end
+
       local hover = vim.lsp.buf.hover
       vim.lsp.buf.hover = function()
         return hover { max_width = 100, max_height = 14, border = 'single' }
       end
-
       vim.api.nvim_set_hl(0, '@lsp.type.namespace.python', { fg = '#4EC9B0', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@lsp.type.function.python', { fg = '#DCDCAA', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@lsp.type.method.python', { fg = '#DCDCAA', bg = 'NONE' })

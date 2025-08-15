@@ -1,6 +1,7 @@
 return {
   {
     'L3MON4D3/LuaSnip',
+    version = '2.*',
     build = (function()
       return 'make install_jsregexp'
     end)(),

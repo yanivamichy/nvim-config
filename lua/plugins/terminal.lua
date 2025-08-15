@@ -30,7 +30,9 @@ return {
       }
       vim.keymap.set('n', '<C-\\>', ':ToggleTerm<CR>', { desc = '[T]oggle [T]erminal' })
       vim.keymap.set('v', '<C-F8>', ":'<,'>:ToggleTermSendVisualLines<CR>", { desc = 'Execute in terminal' })
+      vim.keymap.set('v', '<F32>', ":'<,'>:ToggleTermSendVisualLines<CR>", { desc = 'Execute in terminal' })
       vim.keymap.set('n', '<C-F5>', execute_file, { desc = 'Run file' })
+      vim.keymap.set('n', '<F29>', execute_file, { desc = 'Run file' })
 
       vim.api.nvim_create_autocmd('DirChanged', {
         callback = function()

@@ -18,3 +18,8 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufNewFile' }, {
     end)
   end,
 })
+
+vim.api.nvim_create_autocmd('VimResized', {
+  pattern = '*',
+  command = 'wincmd =',
+})

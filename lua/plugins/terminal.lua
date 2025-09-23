@@ -27,6 +27,7 @@ return {
         winbar = {
           enabled = true,
         },
+        env = { PYTHONPATH = vim.fn.getcwd() },
       }
       vim.keymap.set('n', '<C-\\>', ':ToggleTerm<CR>', { desc = '[T]oggle [T]erminal' })
       vim.keymap.set('v', '<C-F8>', ":'<,'>:ToggleTermSendVisualLines<CR>", { desc = 'Execute in terminal' })

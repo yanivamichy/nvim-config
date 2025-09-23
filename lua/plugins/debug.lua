@@ -128,6 +128,7 @@ return {
       vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
       vim.keymap.set('n', '<F10>', dap.step_over, { desc = 'Debug: Step Over' })
       vim.keymap.set('n', '<C-F10>', dap.step_into, { desc = 'Debug: Step Into' })
+      vim.keymap.set('n', '<F34>', dap.step_into, { desc = 'Debug: Step Into' })
       vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
       vim.keymap.set('n', '<F9>', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
       vim.keymap.set('n', '<F8>', function()
@@ -135,10 +136,13 @@ return {
       end, { desc = 'Debug: Set Breakpoint' })
       vim.keymap.set('n', '<C-c>', dap.terminate, { desc = 'Debug: Terminate' })
       vim.keymap.set({ 'n', 'v' }, '<F2>', dapui.eval, { desc = 'Debug: Evaluate' })
-      vim.keymap.set('v', '<C-F9>', function()
+
+      local function run_selected()
         local lines = vim.fn.getregion(vim.fn.getpos '.', vim.fn.getpos 'v', { type = vim.fn.mode() })
         dap.repl.execute(table.concat(lines, '\n'))
-      end, { desc = 'Debug: Execute selected' })
+      end
+      vim.keymap.set('v', '<C-F9>', run_selected, { desc = 'Debug: Execute selected' })
+      vim.keymap.set('v', '<F33>', run_selected, { desc = 'Debug: Execute selected' })
 
       local float_args = {
         width = math.floor(vim.o.columns * 0.9),

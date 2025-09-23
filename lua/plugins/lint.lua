@@ -18,8 +18,12 @@ return {
         sql = { 'sqlfluff' },
       }
       vim.list_extend(lint.linters.mypy.args, {
-        '--python-executable=' .. require('utils.LanguageToolFinders').get_python_env(),
+        -- '--python-executable=' .. require('utils.LanguageToolFinders').get_python_env(),
+        -- '--follow-untyped-imports',
+        '--ignore-missing-imports',
+        --   '--strict',
       })
+      print(require('utils.LanguageToolFinders').get_python_env())
 
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = vim.api.nvim_create_augroup('lint', { clear = true }),

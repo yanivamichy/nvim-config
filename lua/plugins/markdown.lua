@@ -176,26 +176,26 @@ return {
   --   },
   -- },
 
-  -- {
-  --   'Kurama622/markdown-org',
-  --   ft = 'markdown',
-  --   init = function()
-  --     python_env = require('utils.LanguageToolFinders').get_python_env()
-  --     vim.g.language_path = {
-  --       python = python_env,
-  --       python3 = python_env,
-  --       bash = 'bash',
-  --     }
-  --     vim.g.default_quick_keys = 0
-  --     vim.api.nvim_set_var('org#style#border', 2)
-  --     vim.api.nvim_set_var('org#style#bordercolor', 'FloatBorder')
-  --     vim.api.nvim_set_var('org#style#color', 'String')
-  --   end,
-  --   keys = {
-  --     { '<leader>or', '<cmd>call org#main#runCodeBlock()<cr>', desc = '[R]un code block' },
-  --     { '<leader>oR', '<cmd>call org#main#runLanguage()<cr>', desc = '[R]un language' },
-  --   },
-  -- },
+  {
+    'Kurama622/markdown-org',
+    ft = 'markdown',
+    init = function()
+      python_env = require('utils.LanguageToolFinders').get_python_env()
+      vim.g.language_path = {
+        python = python_env,
+        python3 = python_env,
+        bash = 'bash',
+      }
+      vim.g.default_quick_keys = 0
+      vim.api.nvim_set_var('org#style#border', 2)
+      vim.api.nvim_set_var('org#style#bordercolor', 'FloatBorder')
+      vim.api.nvim_set_var('org#style#color', 'String')
+    end,
+    keys = {
+      { '<leader>mr', '<cmd>call org#main#runCodeBlock()<cr>', desc = '[R]un code block' },
+      { '<leader>mR', '<cmd>call org#main#runLanguage()<cr>', desc = '[R]un language' },
+    },
+  },
 
   -- {
   --   'lervag/vimtex',

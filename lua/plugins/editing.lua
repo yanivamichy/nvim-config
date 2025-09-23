@@ -129,6 +129,7 @@ return {
           vim.fn.execute 'YankyRingHistory'
         end,
         desc = 'Open Yank History',
+        mode = { 'n', 'v' },
       },
       {
         '<leader>P',
@@ -152,6 +153,7 @@ return {
           }, action)
         end,
         desc = 'Open Yank History - Reversed',
+        mode = { 'n', 'v' },
       },
     },
   },

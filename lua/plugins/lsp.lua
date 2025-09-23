@@ -17,12 +17,12 @@ return {
     opts = {},
   },
 
-
   {
     'neovim/nvim-lspconfig',
     version = '2.3.0',
     dependencies = {
       'williamboman/mason.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
@@ -45,7 +45,7 @@ return {
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-            local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
+            local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
               group = highlight_augroup,
@@ -59,10 +59,10 @@ return {
             }) -- clear highlight
 
             vim.api.nvim_create_autocmd('LspDetach', {
-              group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
+              group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+                vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
               end,
             })
           end
@@ -84,7 +84,9 @@ return {
               analysis = {
                 typeCheckingMode = 'off',
                 diagnosticSeverityOverrides = {
+                  -- reportArgumentType = 'error',
                   reportMissingModuleSource = 'error',
+                  reportImplicitAbstractClass = 'error',
                   reportInvalidTypeForm = 'none',
                   reportUndefinedVariable = 'none',
                   reportMissingImports = 'none',
@@ -125,6 +127,7 @@ return {
                 ignore = {
                   'PLR2004',
                   'UP045',
+                  'B905'
                 },
               },
             },
@@ -139,14 +142,14 @@ return {
             },
           },
         },
-        vimls = {},
-        harper_ls = {},
+        -- vimls = {},
+        -- harper_ls = {},
       }
+      require('mason-tool-installer').setup { ensure_installed = vim.tbl_keys(servers or {}) }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
-
       local lspconfig = require 'lspconfig'
       for server, config in pairs(servers) do
         config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, config.capabilities or {})

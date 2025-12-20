@@ -6,6 +6,7 @@ local tikz_doc_template = [[
 \usepackage{tikz}
 \usetikzlibrary{quantikz2}
 \usetikzlibrary{shapes.arrows, shadows, optics, decorations}
+\usetikzlibrary{calc}
 \usepackage{pgfgantt}
 \makeatletter
 \tikzset{
@@ -25,16 +26,20 @@ local tikz_doc_template = [[
 ]]
 
 local function tikz2image(src, filetype, outfile, subtype)
-  system.with_temporary_directory('tikz2image', function(tmpdir)
-    system.with_working_directory(tmpdir, function()
-      local f = io.open('tikz.tex', 'w')
+  local source_dir = (PANDOC_STATE.input_files[1] or '.'):match '(.*/)' or '.'
+  system.with_working_directory(source_dir, function()
+    system.with_temporary_directory('tikz2image', function(tmpdir)
+      texfile = tmpdir .. '/tikz.tex'
+      local f = io.open(texfile, 'w')
       f:write(tikz_doc_template:format(subtype, src, subtype))
       f:close()
-      os.execute 'pdflatex tikz.tex'
+      os.execute(string.format('pdflatex -output-directory=%s %s', tmpdir, texfile))
+
+      local pdfout = tmpdir .. '/tikz.pdf'
       if filetype == 'pdf' then
-        os.rename('tikz.pdf', outfile)
+        os.rename(pdfout, outfile)
       else
-        os.execute('pdf2svg tikz.pdf ' .. outfile)
+        os.execute('pdf2svg ' .. pdfout .. ' ' .. outfile)
       end
     end)
   end)
@@ -77,11 +82,9 @@ function CodeBlock(block)
     local para = pandoc.Image(caption, fname, title, { width = width })
     if FORMAT:match 'latex' then
       return pandoc.Para {
-        -- pandoc.RawInline('latex', '\\hfill\\break{\\centering'),
         pandoc.RawInline('latex', '\\begin{center}'),
         para,
         pandoc.RawInline('latex', '\\end{center}'),
-        -- pandoc.RawInline('latex', '\\par}'),
       }
     end
     if FORMAT:match 'html' then

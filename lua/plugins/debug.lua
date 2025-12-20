@@ -192,6 +192,7 @@ return {
           python = require('utils.LanguageToolFinders').get_python_env,
           justMyCode = false,
           stopOnEntry = false,
+          showReturnValue = false,
           env = { PYTHONPATH = '${workspaceFolder}' .. ':' .. (os.getenv 'PYTHONPATH' or '') },
         },
       }

@@ -127,7 +127,7 @@ return {
                 ignore = {
                   'PLR2004',
                   'UP045',
-                  'B905'
+                  'B905',
                 },
               },
             },
@@ -143,13 +143,20 @@ return {
           },
         },
         -- vimls = {},
-        -- harper_ls = {},
+        harper_ls = {},
       }
       require('mason-tool-installer').setup { ensure_installed = vim.tbl_keys(servers or {}) }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
+      capabilities = vim.tbl_deep_extend('force', capabilities, {
+        offsetEncoding = { 'utf-16' },
+        general = {
+          positionEncodings = { 'utf-16' },
+        },
+      })
+
       local lspconfig = require 'lspconfig'
       for server, config in pairs(servers) do
         config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, config.capabilities or {})

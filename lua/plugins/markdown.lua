@@ -1,3 +1,25 @@
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'ObsidianNoteEnter',
+  callback = function(ev)
+    vim.keymap.del('n', '<CR>', { buffer = ev.buf })
+  end,
+})
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'ObsidianNoteEnter',
+  callback = function(ev)
+    vim.keymap.set('n', 'gf', '<cmd>Obsidian follow_link<cr>', {
+      buffer = ev.buf,
+      desc = 'gf for wiki links',
+    })
+  end,
+})
+
+vim.keymap.set('n', '<leader>mC', function()
+  local pandoc_cache_dir = os.getenv 'HOME' .. '/.cache/pandoc/'
+  vim.fn.delete(pandoc_cache_dir, 'rf')
+  print('Cleared: ' .. pandoc_cache_dir)
+end, { desc = 'Clear Pandoc cache directory' })
+
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown',
   callback = function(args)
@@ -8,10 +30,12 @@ vim.api.nvim_create_autocmd('FileType', {
       local input_file = vim.fn.fnameescape(vim.fn.expand '%:p')
       local output_file = vim.fn.fnameescape('~/renders/' .. vim.fn.expand '%:t:r' .. '.' .. output_filetype)
       local assets_dir = vim.fn.stdpath 'config' .. '/assets'
-      local filter_file = assets_dir .. '/pandoc_filters/tikz.lua'
+      local filters = { 'tikz.lua', 'diagrams.lua' }
 
       local cmd = 'pandoc -i ' .. input_file .. ' -o ' .. output_file .. ' --embed-resources --standalone --mathjax'
-      cmd = cmd .. ' --lua-filter=' .. filter_file
+      for _, f in ipairs(filters) do
+        cmd = cmd .. ' --lua-filter=' .. assets_dir .. '/pandoc_filters/' .. f
+      end
 
       -- local css_file = (#args.fargs == 2 and vim.fn.fnameescape(args.fargs[2])) or (vim.fn.stdpath 'config' .. '/assets/css/water.css')
       -- local css_file = vim.fn.stdpath 'config' .. '/assets/css/water.css'
@@ -20,9 +44,9 @@ vim.api.nvim_create_autocmd('FileType', {
         cmd = cmd .. ' --css=' .. css_file
       end
 
-      if output_filetype == 'pdf' then
-        cmd = cmd .. ' --include-in-header=' .. assets_dir .. '/pandoc_headers/latex_header.tex'
-      end
+      -- if output_filetype == 'pdf' then
+      --   cmd = cmd .. ' --include-in-header=' .. assets_dir .. '/pandoc_headers/latex_header.tex'
+      -- end
 
       vim.cmd('!' .. cmd)
     end, {
@@ -49,12 +73,13 @@ vim.api.nvim_create_autocmd('FileType', {
 return {
   {
     'obsidian-nvim/obsidian.nvim',
-    -- version = '3.11.0',
-    commit = '3baea08',
+    version = '3.14.2',
+    -- commit = '3baea08',
     ft = 'markdown',
     lazy = false,
     dependencies = { 'nvim-lua/plenary.nvim', 'hrsh7th/nvim-cmp', 'nvim-telescope/telescope.nvim' },
     opts = {
+      legacy_commands = false,
       workspaces = {
         {
           name = 'work',
@@ -63,14 +88,6 @@ return {
         {
           name = 'personal',
           path = '~/vaults/personal',
-        },
-      },
-      mappings = {
-        ['gf'] = {
-          action = function()
-            return require('obsidian').util.gf_passthrough()
-          end,
-          opts = { noremap = false, expr = true, buffer = true },
         },
       },
 
@@ -94,17 +111,17 @@ return {
       end,
     },
     keys = {
-      { '<leader>mf', ':ObsidianQuickSwitch<cr>', desc = 'Markdown search [F]iles' },
-      { '<leader>mt', ':ObsidianTags<cr>', desc = 'Markdown search [T]ags' },
-      { '<leader>mg', ':ObsidianSearch<cr>', desc = 'Markdown [G]rep notes' },
-      { '<leader>mw', ':ObsidianWorkspace<cr>', desc = 'Markdown switch [W]orkspace' },
-      { '<leader>mn', ':ObsidianNew<cr>', desc = 'Markdown [N]ew note' },
-      { '<leader>mN', ':ObsidianNewFromTemplate<cr>', desc = 'Markdown [N]ew from template' },
-      { '<leader>mb', ':ObsidianBacklinks<cr>', desc = 'Markdown search [B]acklinks' },
-      { '<leader>md', ':ObsidianToday<cr>', desc = 'Markdown open [D]aily note' },
-      { '<leader>ml', ':ObsidianLink<cr>', desc = 'Markdown [L]link text' },
-      { '<leader>me', ':ObsidianExtract<cr>', desc = 'Markdown [E]xtract text' },
-      { '<leader>mc', ':ObsidianTOC<cr>', desc = 'Markdown TO[C]' },
+      { '<leader>mf', ':Obsidian quick_switch<cr>', desc = 'Markdown search [F]iles' },
+      { '<leader>mt', ':Obsidian tags<cr>', desc = 'Markdown search [T]ags' },
+      { '<leader>mg', ':Obsidian search<cr>', desc = 'Markdown [G]rep notes' },
+      { '<leader>mw', ':Obsidian workspace<cr>', desc = 'Markdown switch [W]orkspace' },
+      { '<leader>mn', ':Obsidian new<cr>', desc = 'Markdown [N]ew note' },
+      { '<leader>mN', ':Obsidian new_from_template<cr>', desc = 'Markdown [N]ew from template' },
+      { '<leader>mb', ':Obsidian backlinks<cr>', desc = 'Markdown search [B]acklinks' },
+      { '<leader>md', ':Obsidian today<cr>', desc = 'Markdown open [D]aily note' },
+      { '<leader>ml', ':Obsidian link<cr>', desc = 'Markdown [L]link text' },
+      { '<leader>me', ':Obsidian extract<cr>', desc = 'Markdown [E]xtract text' },
+      { '<leader>mc', ':Obsidian toc<cr>', desc = 'Markdown TO[C]' },
       {
         '<leader>mm',
         function()
@@ -197,8 +214,8 @@ return {
     },
   },
 
-  -- {
-  --   'lervag/vimtex',
-  --   lazy = false,
-  -- },
+  {
+    'lervag/vimtex',
+    lazy = false,
+  },
 }

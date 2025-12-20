@@ -14,9 +14,9 @@ return { -- Autoformat
         json = { 'biome' },
         toml = { 'taplo' },
         mysql = { 'sql_formatter' },
-        markdown = { 'prettierd' },
+        -- markdown = { 'prettierd' },
         css = { 'prettierd' },
-        tex = { 'tex-fmt', 'bibtex-tidy' },
+        -- tex = { 'tex-fmt', 'bibtex-tidy' },
         ['_'] = { 'trim_whitespace' },
       },
     }

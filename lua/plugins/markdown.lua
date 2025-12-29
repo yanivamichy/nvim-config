@@ -1,12 +1,6 @@
 vim.api.nvim_create_autocmd('User', {
   pattern = 'ObsidianNoteEnter',
   callback = function(ev)
-    vim.keymap.del('n', '<CR>', { buffer = ev.buf })
-  end,
-})
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'ObsidianNoteEnter',
-  callback = function(ev)
     vim.keymap.set('n', 'gf', '<cmd>Obsidian follow_link<cr>', {
       buffer = ev.buf,
       desc = 'gf for wiki links',
@@ -44,10 +38,6 @@ vim.api.nvim_create_autocmd('FileType', {
         cmd = cmd .. ' --css=' .. css_file
       end
 
-      -- if output_filetype == 'pdf' then
-      --   cmd = cmd .. ' --include-in-header=' .. assets_dir .. '/pandoc_headers/latex_header.tex'
-      -- end
-
       vim.cmd('!' .. cmd)
     end, {
       nargs = '+',
@@ -72,9 +62,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
 return {
   {
-    'obsidian-nvim/obsidian.nvim',
-    version = '3.14.2',
-    -- commit = '3baea08',
+    'yanivamichy/obsidian.nvim',
     ft = 'markdown',
     lazy = false,
     dependencies = { 'nvim-lua/plenary.nvim', 'hrsh7th/nvim-cmp', 'nvim-telescope/telescope.nvim' },

@@ -3,6 +3,7 @@ return {
     dependencies = { 'nvim-treesitter/playground' },
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    tag = 'v0.10.0',
     config = function()
       require('nvim-treesitter.configs').setup {
         ensure_installed = {

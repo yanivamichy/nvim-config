@@ -33,7 +33,6 @@ return {
         ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
         ['<leader>u'] = { name = '[U]nit tests', _ = 'which_key_ignore' },
         ['<leader>L'] = { name = '[L]sp symbols', _ = 'which_key_ignore' },
-        ['<leader>o'] = { name = '[O]bsidian', _ = 'which_key_ignore' },
       }
     end,
   },

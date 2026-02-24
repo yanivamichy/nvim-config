@@ -80,7 +80,7 @@ return {
           settings = {
             python = { pythonPath = require('utils.LanguageToolFinders').get_python_env() },
             basedpyright = {
-              disableOrganizeImports = true,
+              -- disableOrganizeImports = true,
               analysis = {
                 typeCheckingMode = 'off',
                 diagnosticSeverityOverrides = {
@@ -89,7 +89,7 @@ return {
                   reportImplicitAbstractClass = 'error',
                   reportInvalidTypeForm = 'none',
                   reportUndefinedVariable = 'none',
-                  reportMissingImports = 'none',
+                  reportMissingImports = 'error',
                   reportAttributeAccessIssue = 'error',
                 },
               },

@@ -37,7 +37,7 @@ local function tikz2image(src, filetype, outfile, subtype)
 
       local pdfout = tmpdir .. '/tikz.pdf'
       if filetype == 'pdf' then
-        os.rename(pdfout, outfile)
+        os.execute('mv -f ' .. pdfout .. ' ' .. outfile)
       else
         os.execute('pdf2svg ' .. pdfout .. ' ' .. outfile)
       end

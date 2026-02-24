@@ -25,8 +25,15 @@ vim.api.nvim_create_autocmd('FileType', {
       local output_file = vim.fn.fnameescape('~/renders/' .. vim.fn.expand '%:t:r' .. '.' .. output_filetype)
       local assets_dir = vim.fn.stdpath 'config' .. '/assets'
       local filters = { 'tikz.lua', 'diagrams.lua' }
+      local extensions = { 'lists_without_preceding_blankline', 'hard_line_breaks', 'tex_math_single_backslash' }
 
-      local cmd = 'pandoc -i ' .. input_file .. ' -o ' .. output_file .. ' --embed-resources --standalone --mathjax'
+      local cmd = 'pandoc -f markdown+'
+        .. table.concat(extensions, '+')
+        .. ' -i '
+        .. input_file
+        .. ' -o '
+        .. output_file
+        .. ' --embed-resources --standalone --mathjax'
       for _, f in ipairs(filters) do
         cmd = cmd .. ' --lua-filter=' .. assets_dir .. '/pandoc_filters/' .. f
       end

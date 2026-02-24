@@ -17,7 +17,7 @@ vim.g.have_nerd_font = false
 require 'options'
 require 'keymaps'
 require 'autocommands'
-require 'commands'
+-- require 'commands'
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -46,9 +46,11 @@ require('lazy').setup {
   require 'plugins.lint',
   require 'plugins.debug',
   require 'plugins.unittest',
-  require 'plugins.terminal',
+  require 'plugins.snacks',
   require 'plugins.git',
   require 'plugins.markdown',
+  require 'plugins.opencode'
+  -- require 'plugins.copilot'
   -- require 'plugins.session_manager',
   -- require 'plugins.remote',
   -- require 'plugins.dadbod',

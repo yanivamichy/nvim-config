@@ -66,6 +66,131 @@ local function previewed_float(elem_name, float_args)
   end)
 end
 
+function create_bottom_tray(dapui, height)
+  local tray = {
+    height = height or 10,
+    split_ratio = 0.5,
+    state = { repl = false, console = false },
+    wins = {},
+  }
+
+  local function set_win_opts(win)
+    local win_settings = {
+      relativenumber = false,
+      number = false,
+      winfixwidth = true,
+      winfixheight = true,
+      wrap = false,
+      signcolumn = 'auto',
+      spell = false,
+    }
+    for key, val in pairs(win_settings) do
+      vim.api.nvim_set_option_value(key, val, { win = win })
+    end
+    vim.api.nvim_win_call(win, function()
+      vim.opt.winhighlight:append { Normal = 'DapUINormal', EndOfBuffer = 'DapUIEndOfBuffer' }
+    end)
+  end
+
+  local function open_element(name)
+    if tray.wins[name] then
+      return
+    end
+    local buf = dapui.elements[name].buffer()
+    local other = name == 'repl' and 'console' or 'repl'
+    local other_win = tray.wins[other]
+
+    if other_win and vim.api.nvim_win_is_valid(other_win) then
+      -- Other element already open, split relative to it
+      local split_dir = name == 'repl' and 'left' or 'right'
+      local total_width = vim.api.nvim_win_get_width(other_win)
+      tray.wins[name] = vim.api.nvim_open_win(buf, false, {
+        split = split_dir,
+        win = other_win,
+      })
+      vim.api.nvim_win_set_width(tray.wins.repl, math.floor(total_width * tray.split_ratio))
+    else
+      -- Nothing open, create the bottom split
+      local cur_win = vim.api.nvim_get_current_win()
+      vim.cmd('botright ' .. tray.height .. 'split')
+      vim.api.nvim_win_set_buf(0, buf)
+      tray.wins[name] = vim.api.nvim_get_current_win()
+      vim.api.nvim_set_current_win(cur_win)
+    end
+
+    tray.state[name] = true
+    set_win_opts(tray.wins[name])
+    require('dapui.controls').refresh_control_panel()
+  end
+
+  local function close_element(name, remove_state)
+    if remove_state == nil then
+      remove_state = true
+    end
+    if
+      tray.wins.repl
+      and tray.wins.console
+      and vim.api.nvim_win_is_valid(tray.wins.repl)
+      and vim.api.nvim_win_is_valid(tray.wins.console)
+    then
+      local repl_w = vim.api.nvim_win_get_width(tray.wins.repl)
+      local console_w = vim.api.nvim_win_get_width(tray.wins.console)
+      tray.split_ratio = repl_w / (repl_w + console_w)
+    end
+
+    local win = tray.wins[name]
+    if win and vim.api.nvim_win_is_valid(win) then
+      tray.height = vim.api.nvim_win_get_height(win)
+      vim.api.nvim_win_close(tray.wins[name], true)
+    end
+    tray.wins[name] = nil
+    if remove_state then
+      tray.state[name] = false
+    end
+  end
+
+  function tray.toggle_element(name)
+    if tray.state[name] then
+      close_element(name)
+    else
+      open_element(name)
+    end
+  end
+
+  function tray.open()
+    if not tray.state.repl and not tray.state.console then
+      tray.state.repl = true
+      tray.state.console = true
+    end
+    for name, wanted in pairs(tray.state) do
+      if wanted then
+        open_element(name)
+      end
+    end
+  end
+
+  function tray.close()
+    for name, _ in pairs(tray.wins) do
+      close_element(name, false)
+    end
+  end
+
+  function tray.toggle()
+    if next(tray.wins) == nil then
+      tray.open()
+    else
+      tray.close()
+    end
+  end
+
+  local config = require 'dapui.config'
+  if config.controls.enabled and config.controls.element ~= '' then
+    require('dapui.controls').enable_controls(dapui.elements[config.controls.element])
+  end
+  require('dapui.controls').refresh_control_panel()
+  return tray
+end
+
 return {
   {
     'mfussenegger/nvim-dap',
@@ -111,6 +236,16 @@ return {
             position = 'bottom',
             size = 10,
           },
+          {
+            elements = {
+              {
+                id = 'watches',
+                size = 1,
+              },
+            },
+            position = 'left',
+            size = 30,
+          },
         },
         element_mappings = {
           stacks = { open = '<CR>', expand = 'o' },
@@ -120,9 +255,19 @@ return {
           border = 'rounded',
         },
       }
-      dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-      dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-      dap.listeners.before.event_exited['dapui_config'] = dapui.close
+      local bottom_tray = create_bottom_tray(dapui, 10)
+      dap.listeners.after.event_initialized['dapui_config'] = function()
+        bottom_tray.open()
+        -- dapui.open()
+      end
+      dap.listeners.before.event_terminated['dapui_config'] = function()
+        bottom_tray.close()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited['dapui_config'] = function()
+        bottom_tray.close()
+        dapui.close()
+      end
 
       vim.keymap.set('n', '<F4>', dap.pause, { desc = 'Debug: Pause' })
       vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
@@ -163,7 +308,34 @@ return {
       vim.keymap.set('n', '<leader>db', function()
         previewed_float('breakpoints', float_args)
       end, { desc = 'Debug: Breakpoints.' })
-      vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: Toggle UI.' })
+
+      vim.keymap.set('n', '<F7>', function()
+        -- dapui.toggle { layout = 1 }
+        bottom_tray.toggle()
+      end, { desc = 'Debug: Toggle UI.' })
+
+      vim.keymap.set('n', '<leader>dW', function()
+        local tray_was_open = next(bottom_tray.wins) ~= nil
+        local old_lz = vim.o.lazyredraw
+        vim.o.lazyredraw = true
+        if tray_was_open then
+          bottom_tray.close()
+        end
+        dapui.toggle { layout = 2 }
+        if tray_was_open then
+          bottom_tray.open()
+        end
+        vim.o.lazyredraw = old_lz
+        vim.cmd 'redraw'
+      end, { desc = 'Debug: Toggle Watches sidebar' })
+
+      vim.keymap.set('n', '<C-F7>', function()
+        bottom_tray.toggle_element 'console'
+      end, { desc = 'Debug: Toggle Console.' })
+
+      vim.keymap.set('n', '<S-F7>', function()
+        bottom_tray.toggle_element 'repl'
+      end, { desc = 'Debug: Toggle REPL.' })
 
       require('mason-nvim-dap').setup {
         automatic_installation = true,

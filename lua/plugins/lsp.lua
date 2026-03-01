@@ -39,7 +39,19 @@ return {
           map('<leader>Lt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype definition')
           map('<leader>Ld', require('telescope.builtin').lsp_document_symbols, '[D]ocument symbols')
           map('<leader>Lw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace symbols')
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          -- map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+
+          map('<leader>rn', function()
+            local orig = vim.ui.input
+            vim.ui.input = function(opts, on_confirm)
+              opts = opts or {}
+              opts.win = { relative = 'cursor' }
+              orig(opts, on_confirm)
+              vim.ui.input = orig
+            end
+            vim.lsp.buf.rename()
+          end, '[R]e[n]ame')
+
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
@@ -150,12 +162,12 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
-      capabilities = vim.tbl_deep_extend('force', capabilities, {
-        offsetEncoding = { 'utf-16' },
-        general = {
-          positionEncodings = { 'utf-16' },
-        },
-      })
+      -- capabilities = vim.tbl_deep_extend('force', capabilities, {
+      --   offsetEncoding = { 'utf-16' },
+      --   general = {
+      --     positionEncodings = { 'utf-16' },
+      --   },
+      -- })
 
       local lspconfig = require 'lspconfig'
       for server, config in pairs(servers) do

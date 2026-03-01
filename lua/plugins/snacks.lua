@@ -22,12 +22,16 @@ return {
         enabled = true,
         auto_insert = false,
         start_insert = false,
+        -- auto_close = false,
         win = {
           style = 'terminal',
           position = 'bottom',
           height = 0.15,
         },
       },
+      -- styles = {
+        -- input = { relative = 'cursor' },
+      -- },
     },
     lazy = false,
     keys = {

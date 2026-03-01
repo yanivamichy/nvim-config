@@ -35,6 +35,7 @@ vim.opt.rtp:prepend(lazypath)
 -- see :Lazy, update with :Lazy update
 require('lazy').setup {
   require 'plugins.telescope',
+  require 'plugins.snacks',
   require 'plugins.visual',
   require 'plugins.editing',
   require 'plugins.navigation',
@@ -46,7 +47,6 @@ require('lazy').setup {
   require 'plugins.lint',
   require 'plugins.debug',
   require 'plugins.unittest',
-  require 'plugins.snacks',
   require 'plugins.git',
   require 'plugins.markdown',
   require 'plugins.opencode'

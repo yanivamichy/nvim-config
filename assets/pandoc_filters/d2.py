@@ -41,10 +41,10 @@ d2_theme = {
 def extract_theme_id(theme: str) -> int:
     try:
         # Value is just theme id
-        theme = int(theme)
-        if theme not in d2_theme.values():
+        theme_int = int(theme)
+        if theme_int not in d2_theme.values():
             sys.stderr.write(
-                "Theme {theme} not found make sure its a valid theme with `d2 themes`! Using default from d2."
+                "Theme {theme} not found make sure its a valid theme with `d2 themes`! Using default from d2.",
             )
     except ValueError:
         try:
@@ -52,13 +52,13 @@ def extract_theme_id(theme: str) -> int:
             return d2_theme[theme]
         except KeyError:
             sys.stderr.write(
-                f"Theme {theme} not found make sure its a valid theme with `d2 themes`! Using default 0."
+                f"Theme {theme_int} not found make sure its a valid theme with `d2 themes`! Using default 0.",
             )
             pass
     return 0
 
 
-def d2(key, value, format, meta):  # noqa: ARG001
+def d2(key, value, format_, meta):
     if key == "CodeBlock":
         [[ident, classes, keyvals], code] = value
 
@@ -89,7 +89,7 @@ def d2(key, value, format, meta):  # noqa: ARG001
                     f"--sketch={sketch}",
                     src,
                     dest,
-                ]
+                ],
             )
             sys.stderr.write("Created image " + dest + "\n")
 

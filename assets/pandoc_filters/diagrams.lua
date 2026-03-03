@@ -114,7 +114,7 @@ end
 -- PlantUML engine; assumes that there's a `plantuml` binary.
 local plantuml = {
   line_comment_start = [[']],
-  mime_types = mime_types_set { 'pdf', 'png', 'svg' },
+  mime_types = mime_types_set { 'svg', 'png' },
   compile = function(self, puml)
     local mime_type = self.mime_type or 'image/svg+xml'
     -- PlantUML format identifiers correspond to common file extensions.
@@ -593,24 +593,20 @@ local function code_to_figure(conf)
 
     -- Create a figure if the diagram has a caption; otherwise return
     -- just the image.
-    return dgr_opt.caption
-        and pandoc.Figure(pandoc.Plain { image }, dgr_opt.caption, dgr_opt['fig-attr'])
+    return dgr_opt.caption and pandoc.Figure(pandoc.Plain { image }, dgr_opt.caption, dgr_opt['fig-attr'])
       or pandoc.Plain { image }
   end
 end
 
-return setmetatable(
+return setmetatable({
   {
-    {
-      Pandoc = function(doc)
-        local conf = configure(doc.meta, FORMAT)
-        return doc:walk {
-          CodeBlock = code_to_figure(conf),
-        }
-      end,
-    },
+    Pandoc = function(doc)
+      local conf = configure(doc.meta, FORMAT)
+      return doc:walk {
+        CodeBlock = code_to_figure(conf),
+      }
+    end,
   },
-  {
-    version = version,
-  }
-)
+}, {
+  version = version,
+})

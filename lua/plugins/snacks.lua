@@ -11,6 +11,7 @@ vim.api.nvim_create_autocmd('DirChanged', {
     commands = UpdateCommands()
   end,
 })
+local env = { PYTHONPATH = vim.fn.getcwd() }
 
 return {
   {
@@ -30,7 +31,7 @@ return {
         },
       },
       -- styles = {
-        -- input = { relative = 'cursor' },
+      -- input = { relative = 'cursor' },
       -- },
     },
     lazy = false,
@@ -39,7 +40,7 @@ return {
         '<C-F8>',
         function()
           local text = require('utils.misc').get_selected_text()
-          local term = require('snacks').terminal.get()
+          local term = Snacks.terminal.get(nil, { win = { enter = false }, env = env })
           local job_id = vim.b[term.buf].terminal_job_id
           vim.api.nvim_chan_send(job_id, text .. '\r')
         end,
@@ -50,7 +51,7 @@ return {
         '<F32>',
         function()
           local text = require('utils.misc').get_selected_text()
-          local term = Snacks.terminal.get()
+          local term = Snacks.terminal.get(nil, { win = { enter = false }, env = env })
           local job_id = vim.b[term.buf].terminal_job_id
           vim.api.nvim_chan_send(job_id, text .. '\r')
         end,
@@ -64,7 +65,13 @@ return {
           local cmd = commands[filetype]
           if cmd then
             local filename = vim.fn.expand '%:.' or vim.fn.expand '%:p'
-            local term = Snacks.terminal.get()
+            local term = Snacks.terminal.get(nil, { win = { enter = false }, env = env })
+            if not term:valid() then
+              term:show()
+            end
+            vim.api.nvim_win_call(term.win, function()
+              vim.cmd 'normal! G'
+            end)
             local job_id = vim.b[term.buf].terminal_job_id
             vim.api.nvim_chan_send(job_id, cmd .. ' ' .. filename .. '\r')
           end
@@ -79,7 +86,13 @@ return {
           local cmd = commands[filetype]
           if cmd then
             local filename = vim.fn.expand '%:.' or vim.fn.expand '%:p'
-            local term = Snacks.terminal.get()
+            local term = Snacks.terminal.get(nil, { win = { enter = false }, env = env })
+            if not term:valid() then
+              term:show()
+            end
+            vim.api.nvim_win_call(term.win, function()
+              vim.cmd 'normal! G'
+            end)
             local job_id = vim.b[term.buf].terminal_job_id
             vim.api.nvim_chan_send(job_id, cmd .. ' ' .. filename .. '\r')
           end
@@ -90,11 +103,12 @@ return {
       {
         '<C-\\>',
         function()
-          local term = Snacks.terminal.get(nil, { create = false })
+          local term = Snacks.terminal.get(nil, { create = false, env = env })
           if term and term.win and vim.api.nvim_win_is_valid(term.win) then
             term.opts.height = vim.api.nvim_win_get_height(term.win)
           end
-          Snacks.terminal.toggle(nil, { win = { enter = false } })
+          -- Snacks.terminal.toggle(nil, { win = { enter = false } })
+          Snacks.terminal.toggle(nil, { win = { enter = false }, env = env })
         end,
         desc = 'Toggle Terminal',
       },

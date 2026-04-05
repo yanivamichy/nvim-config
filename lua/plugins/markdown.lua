@@ -34,6 +34,7 @@ vim.api.nvim_create_autocmd('FileType', {
         .. ' -o '
         .. output_file
         .. ' --embed-resources --standalone --mathjax'
+        .. ' -V colorlinks=true'
 
       for _, f in ipairs(filters) do
         cmd = cmd .. ' --lua-filter=' .. assets_dir .. '/pandoc_filters/' .. f

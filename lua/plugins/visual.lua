@@ -61,7 +61,7 @@ return {
           component_separators = { left = '|', right = '|' },
           section_separators = { left = '|', right = '|' },
           globalstatus = true,
-          disabled_filetypes = { winbar = { 'dap-repl' } },
+          disabled_filetypes = { winbar = { 'dap-repl', 'opencode', 'opencode_output' } },
         },
         sections = {
           lualine_c = {

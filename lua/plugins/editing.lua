@@ -45,14 +45,18 @@ return {
       local Rule = require 'nvim-autopairs.rule'
       local cond = require 'nvim-autopairs.conds'
       autopairs.add_rules {
-        Rule('$', '$', { 'markdown', 'tex' }):with_move(cond.not_before_text '$'):with_pair(function(opts)
-          local after = cond.after_text '$'(opts)
-          local before = cond.not_before_text '$'(opts)
-          if before == nil then
-            before = true
-          end
-          return before or after
-        end),
+        Rule('$', '$', { 'markdown', 'tex' })
+          :with_move(cond.not_before_text '$')
+          :with_pair(cond.not_before_regex('%S', 1))
+          :with_pair(cond.not_after_regex('%S', 1))
+          :with_pair(function(opts)
+            local after = cond.after_text '$'(opts)
+            local before = cond.not_before_text '$'(opts)
+            if before == nil then
+              before = true
+            end
+            return before or after
+          end),
       }
 
       autopairs.add_rules {

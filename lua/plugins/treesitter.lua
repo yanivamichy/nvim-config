@@ -34,6 +34,8 @@ return {
         },
         indent = { enable = true, disable = { 'ruby' } },
       }
+      -- vim.treesitter.language.register('python', 'matplotlib')
+
       vim.api.nvim_set_hl(0, '@variable.python', { fg = '#c0caf5', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@variable.member.python', { fg = '#c0caf5', bg = 'NONE' })
       -- vim.api.nvim_set_hl(0, '@type.python', { fg = '#c0caf5', bg = 'NONE' })

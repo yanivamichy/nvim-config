@@ -34,6 +34,8 @@ vim.api.nvim_create_autocmd('FileType', {
         .. ' -o '
         .. output_file
         .. ' --embed-resources --standalone --mathjax'
+        .. ' --citeproc'
+        .. ' --csl ' .. assets_dir .. '/csl/ieee.csl'
         .. ' -V colorlinks=true'
 
       for _, f in ipairs(filters) do

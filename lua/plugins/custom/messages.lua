@@ -1,14 +1,17 @@
 local function capture_cmd(command)
-  local output = vim.api.nvim_cmd({ cmd = command }, { output = true })
+  local output = vim.api.nvim_exec2(command, { output = true }).output
   return output:gmatch '[^\r\n]+'
 end
 
 local function toggle_buffer(name)
+  local bufnr = vim.fn.bufnr(name)
   if vim.fn.bufwinid(name) > 0 then
-    vim.fn.execute('bw ' .. name)
+    vim.fn.execute('bw ' .. bufnr)
     return nil
   end
-  if vim.fn.bufexists(name) > 0 then vim.fn.execute('bw ' .. name) end
+  if bufnr > 0 then
+    vim.fn.execute('bw ' .. bufnr)
+  end
 
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_name(buf, name)
@@ -35,4 +38,11 @@ local function display_cmd(command, buf_name)
   end
 end
 
-vim.keymap.set('n', '<leader>tm', function() display_cmd 'messages' end, { desc = '[T]oggle [M]essages' })
+vim.keymap.set('n', '<leader>tm', function()
+  display_cmd 'messages'
+end, { desc = '[T]oggle [M]essages' })
+
+vim.cmd 'redir @Z'
+vim.keymap.set('n', '<leader>tc', function()
+  display_cmd('echo @z', 'Command outputs')
+end, { desc = '[T]oggle [C]ommands' })

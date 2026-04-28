@@ -168,4 +168,11 @@ return {
       vim.keymap.set('n', '<leader>tu', ':UndotreeToggle<CR>', { desc = '[T]oggle [U]ndoTree' })
     end,
   },
+
+  {
+    'kevinhwang91/nvim-bqf',
+    config = function()
+      require('bqf').setup()
+    end,
+  },
 }

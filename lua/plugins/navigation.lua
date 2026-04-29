@@ -11,7 +11,7 @@ return {
       require('oil').setup {
         keymaps = {
           ['q'] = 'actions.close',
-          ['<BS>'] = 'actions.parent',
+          ['<leader>cd'] = { 'actions.cd', opts = { scope = 'global' }, desc = 'cd to current oil dir' },
         },
         win_options = {
           signcolumn = 'yes:2',

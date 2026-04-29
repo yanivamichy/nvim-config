@@ -1,17 +1,11 @@
-local function UpdateCommands()
-  local commands = {
-    python = require('utils.LanguageToolFinders').get_python_env(),
-  }
-  return commands
-end
-
-local commands = UpdateCommands()
+local commands = { python = require('utils.LanguageToolFinders').get_python_env() }
+local env = { PYTHONPATH = vim.fn.getcwd() }
 vim.api.nvim_create_autocmd('DirChanged', {
   callback = function()
-    commands = UpdateCommands()
+    commands.python = require('utils.LanguageToolFinders').get_python_env()
+    env.PYTHONPATH = vim.fn.getcwd()
   end,
 })
-local env = { PYTHONPATH = vim.fn.getcwd() }
 
 return {
   {

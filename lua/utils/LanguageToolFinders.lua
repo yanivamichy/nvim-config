@@ -4,9 +4,6 @@ function M.get_python_env()
   local relative_paths = {
     '/venv/bin/python',
     '/.venv/bin/python',
-    '/.venv/Scripts/python',
-    '/venv/Scripts/python.exe',
-    '/.venv/Scripts/python.exe',
   }
   for _, relative_path in ipairs(relative_paths) do
     local abs_path = cwd .. relative_path

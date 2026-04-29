@@ -1,5 +1,3 @@
--- vim.lsp.inlay_hint.enable()
-
 local hover = vim.lsp.buf.hover
 vim.lsp.buf.hover = function()
   return hover { max_width = 100, max_height = 14, border = 'single' }
@@ -39,7 +37,6 @@ return {
           map('<leader>Lt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype definition')
           map('<leader>Ld', require('telescope.builtin').lsp_document_symbols, '[D]ocument symbols')
           map('<leader>Lw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace symbols')
-          -- map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 
           map('<leader>rn', function()
             local orig = vim.ui.input
@@ -90,7 +87,6 @@ return {
       local servers = {
         basedpyright = {
           settings = {
-            python = { pythonPath = require('utils.LanguageToolFinders').get_python_env() },
             basedpyright = {
               -- disableOrganizeImports = true,
               analysis = {
@@ -156,18 +152,14 @@ return {
         },
         -- vimls = {},
         harper_ls = {},
+        marksman = {},
       }
       require('mason-tool-installer').setup { ensure_installed = vim.tbl_keys(servers or {}) }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
-      -- capabilities = vim.tbl_deep_extend('force', capabilities, {
-      --   offsetEncoding = { 'utf-16' },
-      --   general = {
-      --     positionEncodings = { 'utf-16' },
-      --   },
-      -- })
+      capabilities.general = { positionEncodings = { 'utf-16' } }
 
       local lspconfig = require 'lspconfig'
       for server, config in pairs(servers) do
@@ -213,21 +205,4 @@ return {
       toggle_key_flip_floatwin_setting = true,
     },
   },
-
-  -- {
-  --   'kevinhwang91/nvim-bqf',
-  --   config = function()
-  --     require('bqf').setup()
-  --   end,
-  -- },
-
-  -- {
-  --   'stevearc/qf_helper.nvim',
-  --   opts = {},
-  -- },
-
-  -- {
-  --   'stevearc/quicker.nvim',
-  --   opts = {},
-  -- },
 }

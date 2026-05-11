@@ -16,13 +16,16 @@ return {
         mysql = { 'sql_formatter' },
         markdown = { 'injected', 'prettier' },
         css = { 'prettier' },
-        -- tex = { 'tex-fmt', 'bibtex-tidy' },
+        tex = { 'tex-fmt', 'bibtex-tidy' },
         ['_'] = { 'trim_whitespace' },
       },
 
       formatters = {
         prettier = {
           prepend_args = { '--tab-width', '4' },
+        },
+        ['tex-fmt'] = {
+          prepend_args = { '--tabsize', '4' },
         },
       },
     }

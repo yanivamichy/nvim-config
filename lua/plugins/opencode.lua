@@ -5,6 +5,15 @@ vim.api.nvim_create_autocmd('VimLeavePre', {
 })
 
 return {
+  -- {
+  --   'Cannon07/code-preview.nvim',
+  --   config = function()
+  --     require('code-preview').setup {
+  --       diff = { layout = 'inline' },
+  --     }
+  --   end,
+  -- },
+
   {
     'nickjvandyke/opencode.nvim',
     version = '*', -- Latest stable release
@@ -82,34 +91,149 @@ return {
       end, { desc = 'Restart opencode in current buffer directory' })
     end,
   },
+
   -- {
   --   'sudo-tee/opencode.nvim',
-  --   config = function()
-  --     require('opencode').setup {
-  --       -- preferred_picker = 'telescope',
-  --       default_mode = 'plan',
-  --       -- server = { port = 14500 },
-  --     }
-  --   end,
   --   dependencies = {
   --     'nvim-lua/plenary.nvim',
-  --     -- {
-  --     --   'MeanderingProgrammer/render-markdown.nvim',
-  --     --   opts = {
-  --     --     anti_conceal = { enabled = false },
-  --     --     file_types = { 'markdown', 'opencode_output' },
-  --     --   },
-  --     --   ft = { 'markdown', 'Avante', 'copilot-chat', 'opencode_output' },
-  --     -- },
-  --     -- Optional, for file mentions and commands completion, pick only one
-  --     -- 'saghen/blink.cmp',
+  --     'MeanderingProgrammer/render-markdown.nvim',
   --     'hrsh7th/nvim-cmp',
-  --
-  --     -- Optional, for file mentions picker, pick only one
   --     'folke/snacks.nvim',
-  --     -- 'nvim-telescope/telescope.nvim',
-  --     -- 'ibhagwan/fzf-lua',
-  --     -- 'nvim_mini/mini.nvim',
+  --   },
+  --   config = function()
+  --     require('opencode').setup {
+  --       preferred_picker = 'telescope',
+  --       default_mode = 'plan',
+  --       default_global_keymaps = false,
+  --       server = { port = 14500 },
+  --       keymap = {
+  --         editor = {
+  --           ['<leader>ot'] = { 'toggle' },
+  --           ['<leader>oT'] = { 'timeline' },
+  --           ['<leader>os'] = { 'select_session' },
+  --           ['<leader>op'] = { 'configure_provider' },
+  --           ['<leader>oV'] = { 'configure_variant' },
+  --           ['<leader>oy'] = { 'add_visual_selection', mode = { 'v' } },
+  --           ['<leader>oY'] = { 'add_visual_selection_inline', mode = { 'v' } },
+  --           ['<leader>oz'] = { 'toggle_zoom' },
+  --           -- ['<leader>od'] = { 'diff_open' },
+  --           -- ['<leader>o]'] = { 'diff_next' },
+  --           -- ['<leader>o['] = { 'diff_prev' },
+  --           -- ['<leader>oc'] = { 'diff_close' },
+  --         },
+  --         input_window = {
+  --           ['<C-cr>'] = { 'submit_input_prompt', mode = 'i' },
+  --           ['<C-c>'] = { 'cancel', defer_to_completion = true },
+  --           ['~'] = { 'mention_file', mode = 'i' },
+  --           ['@'] = { 'mention', mode = 'i' },
+  --           ['/'] = { 'slash_commands', mode = 'i' },
+  --           ['#'] = { 'context_items', mode = 'i' },
+  --           ['<up>'] = { 'prev_prompt_history', mode = { 'n', 'i' }, defer_to_completion = true },
+  --           ['<down>'] = { 'next_prompt_history', mode = { 'n', 'i' }, defer_to_completion = true },
+  --           ['<Tab>'] = { 'switch_mode', mode = 'i' },
+  --           -- ['<M-r>'] = { 'cycle_variant', mode = 'i' },
+  --         },
+  --         output_window = {
+  --           ['<C-c>'] = { 'cancel' },
+  --           [']]'] = { 'next_message' },
+  --           ['[['] = { 'prev_message' },
+  --           ['i'] = { 'focus_input', 'n' },
+  --           -- ['<leader>oD'] = { 'debug_message' },
+  --           -- ['<leader>oO'] = { 'debug_output' },
+  --           -- ['<leader>ods'] = { 'debug_session' },
+  --         },
+  --       },
+  --       ui = {
+  --         icons = {
+  --           -- preset = 'text',
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
+
+  -- {
+  --   'olimorris/codecompanion.nvim',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-treesitter/nvim-treesitter',
+  --   },
+  --   opts = {
+  --     interactions = {
+  --       chat = {
+  --         adapter = 'opencode',
+  --       },
+  --     },
+  --   },
+  -- },
+  --
+  -- {
+  --   'yetone/avante.nvim',
+  --   build = 'make',
+  --   event = 'VeryLazy',
+  --   version = false,
+  --   opts = {
+  --     mode = 'agentic',
+  --     input = {
+  --       provider = 'snacks',
+  --     },
+  --     provider = 'opencode',
+  --     acp_providers = {
+  --       opencode = {
+  --         command = 'opencode',
+  --         args = { 'acp' },
+  --       },
+  --     },
+  --     behaviour = {
+  --       auto_apply_diff_after_generation = false, -- Don't auto-apply changes
+  --       enable_cursor_planning_mode = true, -- Enable cursor-like review
+  --       auto_approve_tool_permissions = false, -- Require manual approval for edits
+  --       confirmation_ui_style = 'inline_buttons', -- Nice UI for accept/reject
+  --       minimize_diff = true, -- Hide unchanged lines in diff
+  --       auto_set_keymaps = true,
+  --       auto_set_highlight_group = true,
+  --     },
+  --     diff = {
+  --       autojump = true, -- Jump to diff after generation
+  --       override_timeoutlen = 500,
+  --     },
+  --   },
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'MunifTanjim/nui.nvim',
+  --   },
+  -- },
+
+  -- {
+  --   'folke/sidekick.nvim',
+  --   opts = {
+  --     nes = { enabled = false },
+  --     cli = {
+  --       tools = {
+  --         opencode = {},
+  --       },
+  --       mux = {
+  --         backend = 'tmux',
+  --         enabled = false,
+  --       },
+  --     },
+  --   },
+  --   keys = {
+  --     {
+  --       '<leader>ot',
+  --       function()
+  --         require("sidekick.cli").toggle({ name = "opencode", focus = false })
+  --       end,
+  --       desc = 'Sidekick Toggle CLI',
+  --     },
+  --     {
+  --       '<leader>oa',
+  --       function()
+  --         require('sidekick.cli').prompt()
+  --       end,
+  --       mode = { 'n', 'x' },
+  --       desc = 'Sidekick Select Prompt',
+  --     },
   --   },
   -- },
 }

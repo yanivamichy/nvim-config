@@ -34,45 +34,34 @@ return {
     dependencies = { 'hrsh7th/nvim-cmp' },
     config = function()
       local autopairs = require 'nvim-autopairs'
-      autopairs.setup {
-        map_cr = false,
-      }
-      vim.keymap.set('i', '<cr>', function()
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-G>u', true, false, true), 'n', false)
-        return autopairs.autopairs_cr()
-      end, { expr = true, noremap = true, replace_keycodes = false })
+      autopairs.setup { map_cr = true }
 
       local Rule = require 'nvim-autopairs.rule'
       local cond = require 'nvim-autopairs.conds'
+
+      local not_in_math = function()
+        return vim.fn['vimtex#syntax#in_mathzone']() == 0
+      end
+      local between_dollars = function(opts)
+        return cond.before_text '$'(opts) and cond.after_text '$'(opts)
+      end
+
       autopairs.add_rules {
         Rule('$', '$', { 'markdown', 'tex' })
-          :with_move(cond.not_before_text '$')
-          :with_pair(cond.not_before_regex('%S', 1))
-          :with_pair(cond.not_after_regex('%S', 1))
           :with_pair(function(opts)
-            local after = cond.after_text '$'(opts)
-            local before = cond.not_before_text '$'(opts)
-            if before == nil then
-              before = true
-            end
-            return before or after
-          end),
+            return not_in_math() or between_dollars(opts)
+          end)
+          :with_move(cond.not_before_text '$')
+          :with_cr(cond.none()),
       }
 
       autopairs.add_rules {
-        Rule('$$', '$$', { 'markdown', 'tex' }):with_move(cond.after_text '$$'):with_pair(cond.not_before_text '$'),
+        Rule('$$', '$$', { 'markdown', 'tex' }):with_pair(cond.not_before_text '$'):with_move(cond.done()),
       }
 
       -- If you want to automatically add `(` after selecting a function or method
       local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
       local cmp = require 'cmp'
-      local handlers = require 'nvim-autopairs.completion.handlers'
-      local Kind = cmp.lsp.CompletionItemKind
-      cmp_autopairs.filetypes.tex =
-        { ['{'] = {
-          kind = { Kind.Function },
-          handler = handlers['*'],
-        } }
       cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
     end,
   },

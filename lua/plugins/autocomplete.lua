@@ -16,6 +16,21 @@ return {
   },
 
   {
+    'SirVer/ultisnips',
+    ft = { 'tex', 'plaintex', 'latex' },
+    init = function()
+      vim.g.UltiSnipsSnippetDirectories = {
+        vim.fn.stdpath 'config' .. '/UltiSnips',
+      }
+
+      -- -- Use Ctrl-j / Ctrl-k to avoid fighting LazyVim's Tab completion mappings
+      -- vim.g.UltiSnipsExpandTrigger = '<c-j>'
+      vim.g.UltiSnipsJumpForwardTrigger = '<c-j>'
+      vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
+    end,
+  },
+
+  {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
@@ -23,16 +38,15 @@ return {
       'saadparwaiz1/cmp_luasnip',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp',
+      'mfussenegger/nvim-dap',
       'rcarriga/cmp-dap',
-      -- 'kdheepak/cmp-latex-symbols',
-      -- 'micangl/cmp-vimtex',
+      'quangnguyen30192/cmp-nvim-ultisnips',
     },
     config = function()
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       local compare = require 'cmp.config.compare'
       local types = require 'cmp.types'
-      luasnip.config.setup {}
 
       cmp.setup {
         snippet = {
@@ -67,8 +81,7 @@ return {
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
-          { name = 'copilot' },
-          -- { name = 'vimtex' },
+          -- { name = 'copilot' },
         },
         sorting = {
           priority_weight = 2,
@@ -94,8 +107,16 @@ return {
           return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt' or require('cmp_dap').is_dap_buffer()
         end,
       }
-      require('cmp').setup.filetype({ 'dap-repl', 'dapui_watches', 'dapui_hover' }, {
+
+      cmp.setup.filetype({ 'dap-repl', 'dapui_watches', 'dapui_hover' }, {
         sources = { { name = 'dap' } },
+      })
+      -- cmp.setup.filetype({ 'tex', 'plaintex', 'latex' }, {
+      --   sources = cmp.config.sources { { name = 'ultisnips' } },
+      -- })
+
+      cmp.setup.filetype({ 'tex', 'plaintex', 'latex' }, {
+        sources = cmp.config.sources({ { name = 'ultisnips' } }, cmp.get_config().sources),
       })
     end,
   },

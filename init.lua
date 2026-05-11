@@ -49,7 +49,8 @@ require('lazy').setup {
   require 'plugins.unittest',
   require 'plugins.git',
   require 'plugins.markdown',
-  require 'plugins.opencode'
+  require 'plugins.latex',
+  require 'plugins.opencode',
   -- require 'plugins.copilot'
   -- require 'plugins.session_manager',
   -- require 'plugins.remote',

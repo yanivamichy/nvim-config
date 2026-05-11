@@ -42,7 +42,7 @@ vim.keymap.set('n', '<leader>tm', function()
   display_cmd 'messages'
 end, { desc = '[T]oggle [M]essages' })
 
-vim.cmd 'redir @Z'
+vim.cmd 'redir @L'
 vim.keymap.set('n', '<leader>tc', function()
-  display_cmd('echo @z', 'Command outputs')
+  display_cmd('echo @l', 'Command outputs')
 end, { desc = '[T]oggle [C]ommands' })

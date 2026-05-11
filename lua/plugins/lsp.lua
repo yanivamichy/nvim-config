@@ -3,6 +3,67 @@ vim.lsp.buf.hover = function()
   return hover { max_width = 100, max_height = 14, border = 'single' }
 end
 
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
+  callback = function(event)
+    local map = function(keys, func, desc)
+      vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+    end
+
+    local builtin = require 'telescope.builtin'
+    map('gd', builtin.lsp_definitions, '[G]oto [D]efinition')
+    map('gr', builtin.lsp_references, '[G]oto [R]eferences')
+    map('gI', builtin.lsp_implementations, '[G]oto [I]mplementation')
+    map('<leader>Lt', builtin.lsp_type_definitions, '[G]oto [T]ype definition')
+    map('<leader>Ld', builtin.lsp_document_symbols, '[D]ocument symbols')
+    map('<leader>Lw', builtin.lsp_dynamic_workspace_symbols, '[W]orkspace symbols')
+
+    map('<leader>rn', function()
+      local orig = vim.ui.input
+      vim.ui.input = function(opts, on_confirm)
+        opts = opts or {}
+        opts.win = { relative = 'cursor' }
+        orig(opts, on_confirm)
+        vim.ui.input = orig
+      end
+      vim.lsp.buf.rename()
+    end, '[R]e[n]ame')
+
+    map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+    map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client and client:supports_method('textDocument/documentHighlight', event.buf) then
+      local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = event.buf,
+        group = highlight_augroup,
+        callback = vim.lsp.buf.document_highlight,
+      }) -- highlight references under cursor
+
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = event.buf,
+        group = highlight_augroup,
+        callback = vim.lsp.buf.clear_references,
+      }) -- clear highlight
+
+      vim.api.nvim_create_autocmd('LspDetach', {
+        group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
+        callback = function(event2)
+          vim.lsp.buf.clear_references()
+          vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
+        end,
+      })
+    end
+
+    if client and client:supports_method('textDocument/inlayHint', event.buf) then
+      map('<leader>th', function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+      end, '[T]oggle Inlay [H]ints')
+    end
+  end,
+})
+
 return {
   {
     'folke/lazydev.nvim',
@@ -17,73 +78,14 @@ return {
 
   {
     'neovim/nvim-lspconfig',
-    version = '2.3.0',
+    -- version = '2.3.0',
+    version = '2.8.0',
     dependencies = {
       'williamboman/mason.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
-      vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
-        callback = function(event)
-          local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
-
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-          map('<leader>Lt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype definition')
-          map('<leader>Ld', require('telescope.builtin').lsp_document_symbols, '[D]ocument symbols')
-          map('<leader>Lw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace symbols')
-
-          map('<leader>rn', function()
-            local orig = vim.ui.input
-            vim.ui.input = function(opts, on_confirm)
-              opts = opts or {}
-              opts.win = { relative = 'cursor' }
-              orig(opts, on_confirm)
-              vim.ui.input = orig
-            end
-            vim.lsp.buf.rename()
-          end, '[R]e[n]ame')
-
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-            local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.document_highlight,
-            }) -- highlight references under cursor
-
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-              buffer = event.buf,
-              group = highlight_augroup,
-              callback = vim.lsp.buf.clear_references,
-            }) -- clear highlight
-
-            vim.api.nvim_create_autocmd('LspDetach', {
-              group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
-              callback = function(event2)
-                vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
-              end,
-            })
-          end
-
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
-          end
-        end,
-      })
-
       local servers = {
         basedpyright = {
           settings = {
@@ -150,9 +152,10 @@ return {
             },
           },
         },
-        -- vimls = {},
+        vimls = {},
         harper_ls = {},
         marksman = {},
+        texlab = {},
       }
       require('mason-tool-installer').setup { ensure_installed = vim.tbl_keys(servers or {}) }
 
@@ -160,17 +163,13 @@ return {
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
       capabilities.general = { positionEncodings = { 'utf-16' } }
+      vim.lsp.config('*', { capabilities = capabilities })
 
-      local lspconfig = require 'lspconfig'
-      for server, config in pairs(servers) do
-        config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, config.capabilities or {})
-        lspconfig[server].setup(config)
+      for name, server in pairs(servers) do
+        vim.lsp.config(name, server)
+        vim.lsp.enable(name)
       end
 
-      local hover = vim.lsp.buf.hover
-      vim.lsp.buf.hover = function()
-        return hover { max_width = 100, max_height = 14, border = 'single' }
-      end
       vim.api.nvim_set_hl(0, '@lsp.type.namespace.python', { fg = '#4EC9B0', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@lsp.type.function.python', { fg = '#DCDCAA', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@lsp.type.method.python', { fg = '#DCDCAA', bg = 'NONE' })

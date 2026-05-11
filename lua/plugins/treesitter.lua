@@ -1,40 +1,52 @@
 return {
-  { -- Highlight, edit, and navigate code
-    dependencies = { 'nvim-treesitter/playground' },
+  {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    tag = 'v0.10.0',
+    branch = 'main',
     config = function()
-      require('nvim-treesitter.configs').setup {
-        ensure_installed = {
-          'bash',
-          'c',
-          'diff',
-          'html',
-          'lua',
-          'luadoc',
-          'markdown',
-          'markdown_inline',
-          'query',
-          'vim',
-          'vimdoc',
-          'latex',
-        },
-        auto_install = true,
-        highlight = {
-          enable = true,
-          disable = function(lang, bufnr)
-            local langs_to_ignore = { csv = true, latex = true, markdown = false }
-            return langs_to_ignore[lang] or vim.api.nvim_buf_line_count(bufnr) > 10000
-          end,
-          -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-          --  If you are experiencing weird indenting issues, add the language to
-          --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-          additional_vim_regex_highlighting = { 'ruby' },
-        },
-        indent = { enable = true, disable = { 'ruby' } },
+      require('nvim-treesitter').install {
+        'python',
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'latex',
       }
-      -- vim.treesitter.language.register('python', 'matplotlib')
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          local buf, filetype = args.buf, args.match
+
+          if vim.api.nvim_buf_line_count(buf) > 10000 then
+            return
+          end
+
+          local language = vim.treesitter.language.get_lang(filetype)
+          if not language then
+            return
+          end
+          local langs_to_ignore = { csv = true, latex = true }
+          if langs_to_ignore[language] then
+            return
+          end
+
+          if not vim.treesitter.language.add(language) then
+            return
+          end
+
+          vim.treesitter.start(buf, language)
+          if vim.treesitter.query.get(language, 'indents') then
+            vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
 
       vim.api.nvim_set_hl(0, '@variable.python', { fg = '#c0caf5', bg = 'NONE' })
       vim.api.nvim_set_hl(0, '@variable.member.python', { fg = '#c0caf5', bg = 'NONE' })
@@ -47,9 +59,9 @@ return {
       vim.api.nvim_set_hl(0, '@keyword.operator.python', { fg = '#7aa2f7', bg = 'NONE' })
     end,
   },
+
   {
     'nvim-treesitter/nvim-treesitter-context',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
       require('treesitter-context').setup {
         multiline_threshold = 1,

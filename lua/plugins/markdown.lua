@@ -6,18 +6,20 @@ end
 
 map('<leader>mf', function()
   require('telescope.builtin').find_files {
-    search_dirs = { vim.g.markdown_vault },
+    cwd = vim.g.markdown_vault,
+    -- search_dirs = { vim.g.markdown_vault },
     find_command = { 'rg', '--files', '--glob=*.md', '--sortr=modified' },
   }
 end, 'Search [F]iles')
 
 map('<leader>mg', function()
   require('telescope.builtin').live_grep {
-    search_dirs = { vim.g.markdown_vault },
+    cwd = vim.g.markdown_vault,
+    -- search_dirs = { vim.g.markdown_vault },
   }
 end, '[G]rep notes')
 
--- map('<leader>mt', function()
+-- map('<leader>mT', function()
 --   require('telescope.builtin').live_grep {
 --     search_dirs = { vim.g.markdown_vault },
 --     default_text = '#',
@@ -71,35 +73,40 @@ end, '[N]ew note')
 return {
   {
     'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    keys = {
+      { '<leader>mt', '<cmd>RenderMarkdown toggle<cr>', desc = 'Toggle Markdown Rendering' },
+    },
     opts = {
+      file_types = { 'markdown', 'opencode_output' },
+      dash = { enabled = false },
       latex = {
         enabled = false,
       },
     },
   },
 
-  {
-    'bullets-vim/bullets.vim',
-    ft = { 'markdown', 'text', 'extensionless' },
-    init = function()
-      vim.g.bullets_set_mappings = 0
-      vim.g.bullets_enable_in_empty_buffers = 1
-      vim.g.bullets_custom_mappings = {
-        { 'imap', '<cr>', '<Plug>(bullets-newline)' },
-        { 'nmap', 'o', '<Plug>(bullets-newline)' },
-        -- { 'vmap', 'gN', '<Plug>(bullets-renumber)' },
-        -- { 'nmap', 'gN', '<Plug>(bullets-renumber)' },
-        { 'nmap', '<C-m>', '<Plug>(bullets-toggle-checkbox)' },
-        { 'imap', '<C-t>', '<Plug>(bullets-demote)' },
-        { 'nmap', '>>', '<Plug>(bullets-demote)' },
-        { 'vmap', '>', '<Plug>(bullets-demote)' },
-        { 'imap', '<C-d>', '<Plug>(bullets-promote)' },
-        { 'nmap', '<<', '<Plug>(bullets-promote)' },
-        { 'vmap', '<', '<Plug>(bullets-promote)' },
-      }
-    end,
-  },
+  -- {
+  --   'bullets-vim/bullets.vim',
+  --   ft = { 'markdown', 'text', 'extensionless' },
+  --   init = function()
+  --     vim.g.bullets_set_mappings = 0
+  --     vim.g.bullets_enable_in_empty_buffers = 1
+  --     vim.g.bullets_custom_mappings = {
+  --       { 'imap', '<cr>', '<Plug>(bullets-newline)' },
+  --       { 'nmap', 'o', '<Plug>(bullets-newline)' },
+  --       -- { 'vmap', 'gN', '<Plug>(bullets-renumber)' },
+  --       -- { 'nmap', 'gN', '<Plug>(bullets-renumber)' },
+  --       { 'nmap', '<C-m>', '<Plug>(bullets-toggle-checkbox)' },
+  --       { 'imap', '<C-t>', '<Plug>(bullets-demote)' },
+  --       { 'nmap', '>>', '<Plug>(bullets-demote)' },
+  --       { 'vmap', '>', '<Plug>(bullets-demote)' },
+  --       { 'imap', '<C-d>', '<Plug>(bullets-promote)' },
+  --       { 'nmap', '<<', '<Plug>(bullets-promote)' },
+  --       { 'vmap', '<', '<Plug>(bullets-promote)' },
+  --     }
+  --   end,
+  -- },
 
   {
     'iamcco/markdown-preview.nvim',
@@ -111,14 +118,18 @@ return {
       vim.g.mkdp_auto_close = 0
       vim.g.mkdp_combine_preview = 1
     end,
-    keys = {
-      { '<leader>mP', ':MarkdownPreview<cr>', desc = '[O]bsidian [P]review' },
-    },
+    config = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'markdown',
+        callback = function()
+          vim.keymap.set('n', '<leader>mP', ':MarkdownPreview<cr>', { buffer = true, desc = '[M]arkdown [P]review' })
+        end,
+      })
+    end,
   },
 
   {
     'jmbuhr/otter.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
       require('otter').setup()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -147,9 +158,25 @@ return {
       vim.api.nvim_set_var('org#style#bordercolor', 'FloatBorder')
       vim.api.nvim_set_var('org#style#color', 'String')
     end,
-    keys = {
-      { '<leader>mr', '<cmd>call org#main#runCodeBlock()<cr>', desc = '[R]un code block' },
-      { '<leader>mR', '<cmd>call org#main#runLanguage()<cr>', desc = '[R]un language' },
-    },
+    config = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'markdown',
+        callback = function()
+          local opts = { buffer = true }
+          vim.keymap.set(
+            'n',
+            '<leader>mr',
+            '<cmd>call org#main#runCodeBlock()<cr>',
+            vim.tbl_extend('force', opts, { desc = '[R]un code block' })
+          )
+          vim.keymap.set(
+            'n',
+            '<leader>mR',
+            '<cmd>call org#main#runLanguage()<cr>',
+            vim.tbl_extend('force', opts, { desc = '[R]un language' })
+          )
+        end,
+      })
+    end,
   },
 }

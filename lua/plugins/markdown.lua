@@ -143,6 +143,21 @@ return {
     end,
   },
 
+  -- {
+  --   'AckslD/nvim-FeMaco.lua',
+  --   config = function()
+  --     require('femaco').setup()
+  --     vim.api.nvim_create_autocmd('FileType', {
+  --       pattern = 'markdown',
+  --       callback = function()
+  --         vim.keymap.set('n', '<leader>me', function()
+  --           require('femaco.edit').edit_code_block()
+  --         end, { buffer = true, desc = '[M]arkdown [E]dit code' })
+  --       end,
+  --     })
+  --   end,
+  -- },
+
   {
     'Kurama622/markdown-org',
     ft = 'markdown',

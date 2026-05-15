@@ -1,9 +1,16 @@
 local commands = { python = require('utils.LanguageToolFinders').get_python_env() }
-local env = { PYTHONPATH = vim.fn.getcwd() }
+
+local python_dir = vim.fn.fnamemodify(commands['python'], ':h')
+local env = {
+  PYTHONPATH = vim.fn.getcwd(),
+  PATH = python_dir .. ':' .. vim.env.PATH,
+}
+
 vim.api.nvim_create_autocmd('DirChanged', {
   callback = function()
     commands.python = require('utils.LanguageToolFinders').get_python_env()
     env.PYTHONPATH = vim.fn.getcwd()
+    env.PATH = python_dir .. ':' .. vim.env.PATH
   end,
 })
 
@@ -101,7 +108,6 @@ return {
           if term and term.win and vim.api.nvim_win_is_valid(term.win) then
             term.opts.height = vim.api.nvim_win_get_height(term.win)
           end
-          -- Snacks.terminal.toggle(nil, { win = { enter = false } })
           Snacks.terminal.toggle(nil, { win = { enter = false }, env = env })
         end,
         desc = 'Toggle Terminal',

@@ -24,6 +24,10 @@ return {
         callback = function(args)
           local buf, filetype = args.buf, args.match
 
+          if vim.bo[buf].buftype == 'terminal' then
+            return
+          end
+
           if vim.api.nvim_buf_line_count(buf) > 10000 then
             return
           end

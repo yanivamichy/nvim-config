@@ -1,8 +1,8 @@
-vim.api.nvim_create_autocmd('VimLeavePre', {
-  callback = function()
-    vim.fn.system { 'pkill', '-f', 'opencode.*--port 14500' }
-  end,
-})
+-- vim.api.nvim_create_autocmd('VimLeavePre', {
+--   callback = function()
+--     vim.fn.system { 'pkill', '-f', 'opencode.*--port 14500' }
+--   end,
+-- })
 
 return {
   -- {
@@ -16,13 +16,28 @@ return {
 
   {
     'nickjvandyke/opencode.nvim',
-    version = '*', -- Latest stable release
+    version = '0.10.0',
     dependencies = { 'folke/snacks.nvim' },
     config = function()
       ---@type opencode.Opts
+      -- math.randomseed(os.time())
+      -- local port = math.random(1024, 65535)
       vim.g.opencode_opts = {
-        -- lsp = { enabled = true },
-        port = 14500,
+        --   -- lsp = { enabled = true },
+        -- server = {
+        --   start = function()
+        --     require('opencode.terminal').open('opencode --port ' .. port, {
+        --       split = 'right',
+        --       width = math.floor(vim.o.columns * 0.35),
+        --     })
+        --   end,
+        --   toggle = function()
+        --     require('opencode.terminal').toggle('opencode --port ' .. port, {
+        --       split = 'right',
+        --       width = math.floor(vim.o.columns * 0.35),
+        --     })
+        --   end,
+        -- },
         ask = {
           snacks = {
             win = {
@@ -39,28 +54,12 @@ return {
       end, { desc = 'Toggle opencode' })
 
       vim.keymap.set({ 'x' }, '<leader>oa', function()
-        require('opencode').ask('@this: ', { submit = true })
+        require('opencode').ask '@this: '
       end, { desc = 'Ask opencode…' })
 
       vim.keymap.set({ 'n' }, '<leader>oa', function()
-        require('opencode').ask('@buffer: ', { submit = true })
+        require('opencode').ask '@buffer: '
       end, { desc = 'Ask opencode…' })
-
-      vim.keymap.set({ 'n', 'x' }, '<leader>os', function()
-        require('opencode').select()
-      end, { desc = 'Execute opencode action…' })
-
-      vim.keymap.set('n', '<leader>o+', function()
-        require('opencode').prompt('@buffer', { append = true })
-      end, { desc = 'Add buffer to prompt' })
-
-      vim.keymap.set('v', '<leader>o+', function()
-        require('opencode').prompt('@this', { append = true })
-      end, { desc = 'Add selection to prompt' })
-
-      vim.keymap.set({ 'n' }, '<leader>oA', function()
-        require('opencode').ask('', { append = true })
-      end, { desc = 'Append to prompt' })
 
       vim.keymap.set('n', '<leader>oC', function()
         require('opencode').command 'prompt.clear'
@@ -68,14 +67,21 @@ return {
 
       vim.keymap.set('n', '<leader>oS', function()
         require('opencode').command 'prompt.submit'
-      end, { desc = 'Clear prompt' })
+      end, { desc = 'Submit prompt' })
+
+      vim.keymap.set({ 'n', 'x' }, '<leader>os', function()
+        require('opencode').select()
+      end, { desc = 'Execute opencode action…' })
 
       vim.keymap.set('n', '<leader>or', function()
-        if require('opencode.config').provider:get().win then
-          require('opencode').toggle()
-        end
         require('opencode').stop()
-        require('opencode.events').disconnect()
+        vim.defer_fn(function()
+          require('opencode').start()
+        end, 1000)
+      end, { desc = 'Restart opencode' })
+
+      vim.keymap.set('n', '<leader>oR', function()
+        require('opencode').stop()
 
         vim.defer_fn(function()
           local buf_dir = vim.fn.expand '%:p:h'
